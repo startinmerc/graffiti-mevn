@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { Artist, Artwork } = require("./models");
 
 const artist1 = { name: "Artist 1", _id: "5fb193ad4771b829d4e04fa9" };
-const artist2 =	{ name: "Artist 2", _id: "5fb1943a2bdc612a0722454b" },
+const artist2 = { name: "Artist 2", _id: "5fb1943a2bdc612a0722454b" };
 
 const artworks = [
 	{
@@ -47,25 +47,25 @@ const artworks = [
 	},
 ];
 
-function addArtwork(i){
-  Artwork.create({
-    title: i.title,
-    coord_lat: i.location[1],
-    coord_long: i.location[0],
-    description: i.description,
-    artist: i.artist,
-    photos: i.photos,
-  })
+function addArtwork(i) {
+	Artwork.create({
+		title: i.title,
+		coord_lat: i.location[1],
+		coord_long: i.location[0],
+		description: i.description,
+		artist: i.artist,
+		photos: i.photos,
+	});
 }
 
-function seedDB(){
-  Artwork.deleteMany({},(err)=>{
-    if(err){
-      console.log(err)
-    } else {
-      artworks.forEach(v=>addArtwork(v));
-    }
-  })
+function seedDB() {
+	Artwork.deleteMany({}, (err) => {
+		if (err) {
+			console.log(err);
+		} else {
+			artworks.forEach((v) => addArtwork(v));
+		}
+	});
 }
 
 module.exports = seedDB;
