@@ -24,7 +24,7 @@
 <script>
 import IconBase from "../components/icons/IconBase";
 import ArrowRight from "../components/icons/ArrowRight";
-import { geoData } from "../../data";
+import axios from "axios";
 
 export default {
 	name: "ArtworkDetail",
@@ -43,20 +43,7 @@ export default {
 	mounted() {
 		// If title (therefore others) not present...
 		if (!this.$route.params.title) {
-			// Find in geoData based on id from param
-			let res = geoData.data.features.find(
-				(v) => v.properties.id === this.$route.params.id
-			);
-			// If nothing found, return & page gets default 'not found' data
-			if (!res) {
-				return;
-			}
-
-			// Set data to found properties
-			this.title = res.properties.title;
-			this.description = res.properties.description;
-			this.artist = res.properties.artist;
-			this.photos = res.properties.photos;
+			this.findArtwork();
 		} else {
 			// Set data to param properties
 			this.title = this.$route.params.title;
@@ -64,6 +51,21 @@ export default {
 			this.artist = this.$route.params.artist;
 			this.photos = JSON.parse(this.$route.params.photos);
 		}
+	},
+	methods: {
+		findArtwork() {
+			// return new Promise((resolve) => {
+				axios.get(`http://localhost:8081/api/artworks/${this.$route.params.id}`).then((response) => {
+					if(response.data.title){
+						this.title = response.data.title;
+						this.description = response.data.description;
+						this.artist = response.data.artist.name;
+						this.photos = response.data.photos;
+					}
+					// resolve();
+				});
+			// });
+		},
 	},
 };
 </script>
