@@ -6,7 +6,7 @@ exports.createArtist = async function (req, res, next) {
 			name: req.body.name,
 		});
 
-		let foundArtist = db.Artist.findById(artist._id);
+		let foundArtist = await db.Artist.findById(artist._id);
 
 		return res.status(200).json(foundArtist);
 	} catch (err) {
