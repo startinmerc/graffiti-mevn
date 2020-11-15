@@ -23,6 +23,9 @@ app.use("/api/artists", artistRoutes);
 const artworkRoutes = require("./routes/artworks");
 app.use("/api/artworks", artworkRoutes);
 
+const geoRoutes = require("./routes/geojson");
+app.use("/api/geojson", geoRoutes);
+
 // ================= Error Handlers =================
 
 app.use((req, res, next) => {
