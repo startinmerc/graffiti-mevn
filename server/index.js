@@ -16,18 +16,12 @@ app.use(express.json());
 
 // =================== Routes ===================
 
-// const authRoutes = require("./routes/auth");
-// app.use("/api/auth", authRoutes);
+const artistRoutes = require("./routes/artists");
+app.use("/api/artists", artistRoutes);
 
-// ================== Review Routes ==================
+const artworkRoutes = require("./routes/artworks");
+app.use("/api/artworks", artworkRoutes);
 
-// const reviewRoutes = require("./routes/reviews");
-// app.use(
-// 	"/api/users/:id/reviews",
-// 	loginRequired,
-// 	ensureCorrectUser,
-// 	reviewRoutes
-// );
 
 // ================= Error Handlers =================
 
@@ -37,7 +31,8 @@ app.use((req, res, next) => {
 	next(err);
 });
 
-// app.use(errorHandler);
+const errorHandler = require("./handlers/error");
+app.use(errorHandler);
 
 // =================== Start App ===================
 
