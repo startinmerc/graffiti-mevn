@@ -13,7 +13,7 @@ mongoose.set("useCreateIndex", true);
 mongoose.set("useUnifiedTopology", true);
 
 mongoose.connect(
-	process.env.MONDOGB,
+	process.env.local.MONDOGB,
 	{
 		keepAlive: true,
 	}

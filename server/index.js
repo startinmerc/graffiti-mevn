@@ -37,7 +37,7 @@ app.use((req, res, next) => {
 	next(err);
 });
 
-app.use(errorHandler);
+// app.use(errorHandler);
 
 // =================== Start App ===================
 
