@@ -31,3 +31,12 @@ exports.getAllArtists = async (req, res, next) => {
 		return next(err);
 	}
 };
+
+exports.deleteArtistBasic = async (req, res, next) => {
+	try {
+		let artist = await db.Artist.findByIdAndRemove(req.params.id);
+		return res.status(200).json(artist);
+	} catch (err) {
+		next(err);
+	}
+};
