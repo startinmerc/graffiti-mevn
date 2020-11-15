@@ -32,26 +32,12 @@
 </template>
 
 <script>
-import axios from "axios";
 export default {
 	name: "About",
-	data: function() {
-		return { info: null };
-	},
-	methods: {
-		getArtists: function() {
-			axios
-				.get("http://localhost:8081/api/artists/")
-				.then((response) => (this.info = response.data));
-		},
-	},
-	mounted: function() {
-		this.getArtists();
-	},
 };
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 main {
 	display: flex;
 	flex-direction: column;

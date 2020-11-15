@@ -7,7 +7,7 @@
 <script>
 import Vue from "vue";
 import mapboxgl from "mapbox-gl";
-import { geoData } from "../../data";
+import axios from "axios";
 // Import popup component & create class for mounting
 import ArtworkPopup from "../components/ArtworkPopup";
 const ArtworkPopupClass = Vue.extend(ArtworkPopup);
@@ -77,8 +77,10 @@ export default {
 			});
 		},
 		addPoints(mapBox) {
+			axios.get("http://localhost:8081/api/artworks/").then((response) => {
+				mapBox.addSource("artworks", response.data);
+			});
 			// !-Import geoJSON from testData
-			mapBox.addSource("artworks", geoData);
 		},
 		addLayer(mapBox) {
 			mapBox.addLayer({
