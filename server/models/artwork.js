@@ -29,7 +29,7 @@ const artworkSchema = new mongoose.Schema(
 );
 
 // Before removing message
-artworkSchema.pre('remove', async function(next){
+artworkSchema.pre("remove", async function (next) {
 	try {
 		// Find artist
 		let artist = await Artist.findById(this.artist);
@@ -39,11 +39,11 @@ artworkSchema.pre('remove', async function(next){
 		await artist.save();
 		// On you go
 		return next();
-	// Catch errors
-	} catch(err) {
+		// Catch errors
+	} catch (err) {
 		return next(err);
 	}
-})
+});
 
 const Artwork = mongoose.model("Artwork", artworkSchema);
 

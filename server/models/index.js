@@ -12,12 +12,9 @@ mongoose.set("useFindAndModify", false);
 mongoose.set("useCreateIndex", true);
 mongoose.set("useUnifiedTopology", true);
 
-mongoose.connect(
-	process.env.MONGODB,
-	{
-		keepAlive: true,
-	}
-);
+mongoose.connect(process.env.MONGODB, {
+	keepAlive: true,
+});
 
 // Connect schemas
 module.exports.Artist = require("./artist");
