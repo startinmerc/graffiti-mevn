@@ -6,7 +6,7 @@ exports.createArtist = async function (req, res, next) {
 			name: req.body.name,
 		});
 
-		let foundArtist = db.Artist.findById(artist._id);
+		let foundArtist = await db.Artist.findById(artist._id);
 
 		return res.status(200).json(foundArtist);
 	} catch (err) {
@@ -29,5 +29,14 @@ exports.getAllArtists = async (req, res, next) => {
 		return res.status(200).json(artists);
 	} catch (err) {
 		return next(err);
+	}
+};
+
+exports.deleteArtistBasic = async (req, res, next) => {
+	try {
+		let artist = await db.Artist.findByIdAndRemove(req.params.id);
+		return res.status(200).json(artist);
+	} catch (err) {
+		next(err);
 	}
 };
