@@ -30,9 +30,10 @@ export default {
 		// Load map
 		this.loadMap().then((mapBox) => {
 			// Add points
-			this.addPoints(mapBox);
-			// Add layer with points
-			this.addLayer(mapBox);
+			this.addPoints(mapBox).then(() => {
+				// Add layer with points
+				this.addLayer(mapBox);
+			});
 			// Add interactions
 			this.addMouseInteraction(mapBox);
 		});
@@ -77,10 +78,12 @@ export default {
 			});
 		},
 		addPoints(mapBox) {
-			axios.get("http://localhost:8081/api/artworks/").then((response) => {
-				mapBox.addSource("artworks", response.data);
+			return new Promise((resolve) => {
+				axios.get("http://localhost:8081/api/geojson/").then((response) => {
+					mapBox.addSource("artworks", response.data);
+					resolve();
+				});
 			});
-			// !-Import geoJSON from testData
 		},
 		addLayer(mapBox) {
 			mapBox.addLayer({
