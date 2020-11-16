@@ -29,8 +29,10 @@ exports.getArtwork = async (req, res, next) => {
 		return res.status(200).json(artwork);
 	} catch (err) {
 		try {
-			let artwork = await db.Artwork.find({
-				name: req.params.query,
+			// Try finding by title with query & populate artist
+			let artwork = await db.Artwork.findOne({
+				// Regex to replace underscores with spaces
+				title: req.params.query.replace(/_/g, " "),
 			}).populate("artist", { name: true });
 			return res.status(200).json(artwork);
 		} catch (err) {
