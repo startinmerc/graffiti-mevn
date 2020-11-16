@@ -5,7 +5,7 @@ exports.createArtwork = async (req, res, next) => {
 		// Create new Artwork
 		let artwork = await db.Artwork.create(req.body);
 		// Find artist supplied from params
-		let foundArtist = await db.Artist.findById(req.params.id);
+		let foundArtist = await db.Artist.findById(req.body.artist);
 		// Add artwork id to found artist
 		foundArtist.artworks.push(artwork._id);
 		// Save change to artist
