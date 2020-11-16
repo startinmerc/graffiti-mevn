@@ -1,5 +1,6 @@
 const db = require("../models");
 
+// Responds with geoJSON file of all artworks
 exports.getAllGeoJSON = async (req, res, neext) => {
 	try {
 		let artworks = await db.Artwork.find().populate("artist");
@@ -19,6 +20,7 @@ function buildJSON(data) {
 		properties: {
 			title: v.title,
 			description: v.description,
+			// Default arwork marker added though Mapbox Studio
 			icon: "ArtworkMarker",
 			id: v._id,
 			artist: v.artist.name,
