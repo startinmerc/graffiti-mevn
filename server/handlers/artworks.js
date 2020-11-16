@@ -6,8 +6,8 @@ exports.createArtwork = async (req, res, next) => {
 
 		let foundArtist = await db.Artist.findById(req.params.id);
 
-		foundArtist.artworks.push(artwork.id);
 
+		foundArtist.artworks.push(artwork._id);
 		await foundArtist.save();
 
 		let foundArtwork = await db.Artwork.findById(artwork._id).populate(
