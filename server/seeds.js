@@ -47,8 +47,8 @@ const artworks = [
 	},
 ];
 
-function addArtwork(i) {
-	Artwork.create({
+async function addArtwork(i) {
+	let newArtwork = await Artwork.create({
 		title: i.title,
 		coord_lat: i.location[1],
 		coord_long: i.location[0],
@@ -56,6 +56,10 @@ function addArtwork(i) {
 		artist: i.artist,
 		photos: i.photos,
 	});
+	let foundArtist = await Artist.findById(i.artist)
+	foundArtist.artworks.push(newArtwork._id);
+	await foundArtist.save();
+	return;
 }
 
 function seedDB() {
