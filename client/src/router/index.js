@@ -25,15 +25,20 @@ const routes = [
 		component: FullMap,
 	},
 	{
+		path: "/map/:id",
+		component: FullMap,
+		props: true,
+	},
+	{
 		path: "/artwork/:id",
 		name: "ArtworkDetail",
-		component: ArtworkDetail
+		component: ArtworkDetail,
 	},
 	{
 		path: "/artist/:id",
 		name: "ArtistDetail",
-		component: ArtistDetail
-	}
+		component: ArtistDetail,
+	},
 ];
 
 const router = new VueRouter({
