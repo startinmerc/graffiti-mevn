@@ -56,7 +56,7 @@ export default {
 		findArtwork() {
 			// return new Promise((resolve) => {
 				axios.get(`http://localhost:8081/api/artworks/${this.$route.params.id}`).then((response) => {
-					if(response.data.title){
+					if(response.data !== {}){
 						this.title = response.data.title;
 						this.description = response.data.description;
 						this.artist = response.data.artist.name;
