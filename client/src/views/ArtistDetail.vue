@@ -40,4 +40,24 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss">
+.artwork-list {
+	list-style: none;
+	li {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		margin: var(--padding) 0;
+		img {
+			max-height: 50vh;
+			width: auto;
+		}
+		* {
+			margin: 0;
+		}
+		&:nth-of-type(even) {
+			align-items: flex-end;
+		}
+	}
+}
+</style>
