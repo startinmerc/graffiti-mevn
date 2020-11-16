@@ -8,7 +8,7 @@ exports.createArtist = async function (req, res, next) {
 
 		let foundArtist = await db.Artist.findById(artist._id);
 
-		return res.status(200).json(foundArtist);
+		return res.status(201).json(foundArtist);
 	} catch (err) {
 		return next(err);
 	}

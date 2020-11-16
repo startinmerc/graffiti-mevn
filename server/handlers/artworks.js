@@ -14,7 +14,7 @@ exports.createArtwork = async (req, res, next) => {
 			"artist",
 			{ name: true }
 		);
-		return res.status(200).json(foundArtwork);
+		return res.status(201).json(foundArtwork);
 	} catch (err) {
 		return next(err);
 	}
