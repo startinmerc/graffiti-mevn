@@ -39,6 +39,7 @@ exports.getAllArtists = async (req, res, next) => {
 	}
 };
 
+// Only deletes artist, will cause errors on any realted artworks
 exports.deleteArtistBasic = async (req, res, next) => {
 	try {
 		let artist = await db.Artist.findByIdAndRemove(req.params.id);
