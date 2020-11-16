@@ -1,9 +1,11 @@
 <template>
 	<main id="artist-detail" class="main--shrink-wide">
-		<h1>{{ name }}</h1>
-		<ul>
+		<h1 class="padded">{{ name }}</h1>
+		<ul class="artwork-list padded">
 			<li v-for="artwork in artworks" :key="artwork._id">
-				{{ artwork.title }}
+				<h3>{{ artwork.title }}</h3>
+				<img v-if="artwork.photos" :src="artwork.photos[0]" alt="artwork" />
+				<router-link to="map">View on map</router-link>
 			</li>
 		</ul>
 	</main>
