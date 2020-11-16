@@ -12,13 +12,13 @@
 </template>
 
 <script>
-import axios from "axios";
+import { getArtist } from "../utils/api";
 
 export default {
 	name: "ArtistDetail",
 	data: function() {
 		return {
-			name: "Artist not found",
+			name: "",
 			artworks: [],
 		};
 	},
@@ -26,15 +26,18 @@ export default {
 		this.findArtist();
 	},
 	methods: {
-		findArtist() {
-			axios
-				.get(`http://localhost:8081/api/artists/${this.$route.params.id}`)
-				.then((response) => {
-					if (response.data !== {}) {
-						this.name = response.data.name;
-						this.artworks = response.data.artworks;
-					}
-				});
+		async findArtist() {
+      // API call to find artist from supplied id
+      let artist = await getArtist(this.$route.params.id);
+      // If result found
+			if (artist) {
+        // Set data
+				this.name = artist.name;
+				this.artworks = artist.artworks;
+			} else {
+        // Otherwise set not found
+        this.name = "Artist not found";
+      }
 		},
 	},
 };
