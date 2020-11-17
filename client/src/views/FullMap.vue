@@ -15,15 +15,6 @@ const ArtworkPopupClass = Vue.extend(ArtworkPopup);
 export default {
 	name: "FullMap",
 	mounted() {
-		// Generated URL using container's dimentions for image size
-		console.log(
-			`https://api.mapbox.com/styles/v1/mapbox/light-v10/static/-1.0803,53.9583,12,0/${Math.min(
-				this.$refs.mapContainer.clientWidth,
-				1280
-			)}x${this.$refs.mapContainer.clientHeight}?access_token=${
-				process.env.VUE_APP_MAPBOX_TOKEN
-			}`
-		);
 		// Get API token from .env
 		mapboxgl.accessToken = process.env.VUE_APP_MAPBOX_TOKEN;
 
@@ -74,6 +65,34 @@ export default {
 				mapBox.on("styledata", () => {
 					// Send mapBox to pass through to other methods
 					resolve(mapBox);
+				});
+
+				// When map is fully loaded
+				mapBox.on("load", () => {
+					// Find if paramater has been passed
+					const paramID = this.$route.params.id;
+					// If it has,
+					if (paramID !== undefined) {
+						// Set timeout (avoids async errors, probably a better way)
+						// !-See https://github.com/mapbox/mapbox-gl-js/issues/4222#issuecomment-279446075
+						setTimeout(function() {
+							// Get artworks layer from map
+							let features = mapBox.queryRenderedFeatures({
+								layers: ["artworks"],
+							});
+							// Filter markers by param to find matching one
+							let marker = features.filter(
+								(i) => i.properties.id === paramID
+							)[0];
+							// !-Fly to location (To be refactored)
+							mapBox.flyTo({
+								center: marker.geometry.coordinates,
+								speed: 0.8,
+								zoom: 17,
+							});
+							// !-Arbitrary timeout
+						}, 500);
+					}
 				});
 			});
 		},
