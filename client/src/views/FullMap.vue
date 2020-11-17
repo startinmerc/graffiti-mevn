@@ -239,6 +239,16 @@ export default {
 			map.on("mouseleave", "artworks", function() {
 				map.getCanvas().style.cursor = "";
 			});
+
+			// Change the cursor to a pointer when the mouse is over the clusters layer.
+			map.on("mouseenter", "clusters", function() {
+				map.getCanvas().style.cursor = "pointer";
+			});
+
+			// Change it back to a pointer when it leaves.
+			map.on("mouseleave", "clusters", function() {
+				map.getCanvas().style.cursor = "";
+			});
 		},
 	},
 };
