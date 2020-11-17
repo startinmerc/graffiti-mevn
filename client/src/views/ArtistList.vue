@@ -8,7 +8,7 @@
 				:key="artist._id"
 				:style="{ backgroundImage: `url(${getRandomPhoto(artist.artworks)}` }"
 			>
-				<router-link :to="`/artist/${artist._id}`" class="button">{{
+				<router-link :to="`/artist/${artist._id}`">{{
 					artist.name
 				}}</router-link>
 			</li>
