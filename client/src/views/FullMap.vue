@@ -110,11 +110,50 @@ export default {
 				});
 			});
 		},
-		addLayer(mapBox) {
-			mapBox.addLayer({
+		addLayer(map) {
+			map.addLayer({
+				id: "clusters",
+				type: "circle",
+				source: "artworks",
+				filter: ["has", "point_count"],
+				paint: {
+					// 20px circles when point_count is less than 100
+					// 30px circles when point_count is between 100 and 750
+					// 40px circles when point_count is greater than or equal to 750
+					"circle-color": "#e14e6d",
+					"circle-radius": [
+						"step",
+						["get", "point_count"],
+						20,
+						100,
+						30,
+						750,
+						40,
+					],
+				},
+			});
+
+			map.addLayer({
+				id: "cluster-count",
+				type: "symbol",
+				source: "artworks",
+				filter: ["has", "point_count"],
+				layout: {
+					"text-field": "{point_count_abbreviated}",
+					// Uses Mapbox Studio fonts
+					"text-font": ["Raleway Bold"],
+					"text-size": 22,
+				},
+				paint: {
+					"text-color": "#f9f9f9",
+				},
+			});
+
+			map.addLayer({
 				id: "artworks",
 				type: "symbol",
 				source: "artworks",
+				filter: ["!", ["has", "point_count"]],
 				layout: {
 					// SVG file loaded into Mapbox Studio style
 					"icon-image": "ArtworkMarker",
