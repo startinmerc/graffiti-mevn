@@ -27,17 +27,17 @@ export default {
 	},
 	methods: {
 		async findArtist() {
-      // API call to find artist from supplied id
-      let artist = await getArtist(this.$route.params.id);
-      // If result found
+			// API call to find artist from supplied id
+			let artist = await getArtist(this.$route.params.id);
+			// If result found
 			if (artist) {
-        // Set data
+				// Set data
 				this.name = artist.name;
 				this.artworks = artist.artworks;
 			} else {
-        // Otherwise set not found
-        this.name = "Artist not found";
-      }
+				// Otherwise set not found
+				this.name = "Artist not found";
+			}
 		},
 	},
 };
