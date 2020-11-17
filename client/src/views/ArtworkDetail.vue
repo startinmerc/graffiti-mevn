@@ -9,7 +9,7 @@
 		</div>
 		<div class="padded">
 			<h1>{{ title }}</h1>
-			<b v-if="artist">{{ artist }}</b>
+			<router-link v-if="artist" :to="`/artist/${artist}`"><b>{{ artist }}</b></router-link>
 			<p v-if="description">{{ description }}</p>
 			<router-link to="/map" class="button">
 				<icon-base icon-name="arrow-right" height="15" width="15">
@@ -24,13 +24,13 @@
 <script>
 import IconBase from "../components/icons/IconBase";
 import ArrowRight from "../components/icons/ArrowRight";
-import axios from "axios";
+import { getArtwork } from "../utils/api";
 
 export default {
 	name: "ArtworkDetail",
 	data: function() {
 		return {
-			title: "Artwork not found",
+			title: "",
 			artist: undefined,
 			description: undefined,
 			photos: undefined,
@@ -53,18 +53,16 @@ export default {
 		}
 	},
 	methods: {
-		findArtwork() {
-			// return new Promise((resolve) => {
-				axios.get(`http://localhost:8081/api/artworks/${this.$route.params.id}`).then((response) => {
-					if(response.data.title){
-						this.title = response.data.title;
-						this.description = response.data.description;
-						this.artist = response.data.artist.name;
-						this.photos = response.data.photos;
-					}
-					// resolve();
-				});
-			// });
+		async findArtwork() {
+			let artwork = await getArtwork(this.$route.params.id);
+			if (artwork) {
+				this.title = artwork.title;
+				this.description = artwork.description;
+				this.artist = artwork.artist.name;
+				this.photos = artwork.photos;
+			} else {
+				this.title = "Artwork not found";
+			}
 		},
 	},
 };
