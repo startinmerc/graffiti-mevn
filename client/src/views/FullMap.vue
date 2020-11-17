@@ -164,8 +164,26 @@ export default {
 				},
 			});
 		},
-		addMouseInteraction(mapBox) {
-			mapBox.on("click", "artworks", (e) => {
+		addMouseInteraction(map) {
+			// inspect a cluster on click
+			map.on("click", "clusters", function(e) {
+				var features = map.queryRenderedFeatures(e.point, {
+					layers: ["clusters"],
+				});
+				var clusterId = features[0].properties.cluster_id;
+				map
+					.getSource("artworks")
+					.getClusterExpansionZoom(clusterId, function(err, zoom) {
+						if (err) return;
+
+						map.easeTo({
+							center: features[0].geometry.coordinates,
+							zoom: zoom,
+						});
+					});
+			});
+
+			map.on("click", "artworks", (e) => {
 				// Coordinates from event
 				let coordinates = e.features[0].geometry.coordinates.slice();
 				// Data from event trigger
@@ -186,7 +204,7 @@ export default {
 					.setLngLat(coordinates)
 					// Set HTML as Vue ref div
 					.setHTML('<div id="vue-popup-content"></div>')
-					.addTo(mapBox);
+					.addTo(map);
 
 				// Create new Vue component with props for Popup
 				const popupInstance = new ArtworkPopupClass({
@@ -200,7 +218,7 @@ export default {
 				});
 
 				// Center map on selcted point
-				mapBox.flyTo({
+				map.flyTo({
 					center: e.features[0].geometry.coordinates,
 					speed: 0.8,
 				});
@@ -213,13 +231,13 @@ export default {
 			});
 
 			// Change the cursor to a pointer when the mouse is over the artworks layer.
-			mapBox.on("mouseenter", "artworks", function() {
-				mapBox.getCanvas().style.cursor = "pointer";
+			map.on("mouseenter", "artworks", function() {
+				map.getCanvas().style.cursor = "pointer";
 			});
 
 			// Change it back to a pointer when it leaves.
-			mapBox.on("mouseleave", "artworks", function() {
-				mapBox.getCanvas().style.cursor = "";
+			map.on("mouseleave", "artworks", function() {
+				map.getCanvas().style.cursor = "";
 			});
 		},
 	},
