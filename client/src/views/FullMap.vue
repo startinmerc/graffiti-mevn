@@ -19,14 +19,14 @@ export default {
 		mapboxgl.accessToken = process.env.VUE_APP_MAPBOX_TOKEN;
 
 		// Load map
-		this.loadMap().then((mapBox) => {
+		this.loadMap().then((map) => {
 			// Add points
-			this.addPoints(mapBox).then(() => {
+			this.addPoints(map).then(() => {
 				// Add layer with points
-				this.addLayer(mapBox);
+				this.addLayer(map);
 			});
 			// Add interactions
-			this.addMouseInteraction(mapBox);
+			this.addMouseInteraction(map);
 		});
 	},
 	methods: {
@@ -39,7 +39,7 @@ export default {
 					[-1.005763, 54.00422], // Northeast coordinates
 				];
 				// Create Map
-				let mapBox = new mapboxgl.Map({
+				let map = new mapboxgl.Map({
 					// Target div id
 					container: "map-container",
 					// Custom mapbox style
@@ -53,7 +53,7 @@ export default {
 				});
 
 				// Add control for geolocation of user
-				mapBox.addControl(
+				map.addControl(
 					new mapboxgl.GeolocateControl({
 						positionOptions: {
 							enableHighAccuracy: true,
@@ -62,13 +62,13 @@ export default {
 					})
 				);
 				// Resolve Promise when styling is loaded
-				mapBox.on("styledata", () => {
+				map.on("styledata", () => {
 					// Send mapBox to pass through to other methods
-					resolve(mapBox);
+					resolve(map);
 				});
 
 				// When map is fully loaded
-				mapBox.on("load", () => {
+				map.on("load", () => {
 					// Find if paramater has been passed
 					const paramID = this.$route.params.id;
 					// If it has,
@@ -77,7 +77,7 @@ export default {
 						// !-See https://github.com/mapbox/mapbox-gl-js/issues/4222#issuecomment-279446075
 						setTimeout(function() {
 							// Get artworks layer from map
-							let features = mapBox.queryRenderedFeatures({
+							let features = map.queryRenderedFeatures({
 								layers: ["artworks"],
 							});
 							// Filter markers by param to find matching one
@@ -85,7 +85,7 @@ export default {
 								(i) => i.properties.id === paramID
 							)[0];
 							// !-Fly to location (To be refactored)
-							mapBox.flyTo({
+							map.flyTo({
 								center: marker.geometry.coordinates,
 								speed: 0.8,
 								zoom: 17,
