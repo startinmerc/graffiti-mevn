@@ -9,7 +9,7 @@
 		</div>
 		<div class="padded">
 			<h1>{{ title }}</h1>
-			<b v-if="artist">{{ artist }}</b>
+			<router-link v-if="artist" :to="`/artist/${artist}`"><b>{{ artist }}</b></router-link>
 			<p v-if="description">{{ description }}</p>
 			<router-link to="/map" class="button">
 				<icon-base icon-name="arrow-right" height="15" width="15">
@@ -54,7 +54,7 @@ export default {
 	},
 	methods: {
 		async findArtwork() {
-			let artwork = await getArtwork(this.$route.params.query);
+			let artwork = await getArtwork(this.$route.params.id);
 			if (artwork) {
 				this.title = artwork.title;
 				this.description = artwork.description;

@@ -5,6 +5,7 @@ import About from "../views/About.vue";
 import FullMap from "../views/FullMap.vue";
 import ArtworkDetail from "../views/ArtworkDetail.vue";
 import ArtistDetail from "../views/ArtistDetail.vue";
+import ArtistList from "../views/ArtistList.vue";
 
 Vue.use(VueRouter);
 
@@ -38,6 +39,11 @@ const routes = [
 		path: "/artist/:id",
 		name: "ArtistDetail",
 		component: ArtistDetail,
+	},
+	{
+		path: "/artists",
+		name: "ArtistList",
+		component: ArtistList,
 	},
 ];
 
