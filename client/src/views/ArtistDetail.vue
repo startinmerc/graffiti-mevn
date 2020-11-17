@@ -3,9 +3,13 @@
 		<h1 class="padded">{{ name }}</h1>
 		<ul class="artwork-list">
 			<li v-for="artwork in artworks" :key="artwork._id">
-				<h3>{{ artwork.title }}</h3>
-				<img v-if="artwork.photos" :src="artwork.photos[0]" alt="artwork" />
-				<router-link :to="`/map/${artwork._id}`">View on map</router-link>
+				<router-link :to="`/artwork/${artwork._id}`"
+					><h3>{{ artwork.title }}</h3>
+					<img v-if="artwork.photos" :src="artwork.photos[0]" alt="artwork"
+				/></router-link>
+				<p>
+					<router-link :to="`/map/${artwork._id}`">View on map</router-link>
+				</p>
 			</li>
 		</ul>
 	</main>
