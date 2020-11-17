@@ -96,10 +96,16 @@ export default {
 				});
 			});
 		},
-		addPoints(mapBox) {
+		addPoints(map) {
 			return new Promise((resolve) => {
 				axios.get("http://localhost:8081/api/geojson/").then((response) => {
-					mapBox.addSource("artworks", response.data);
+					map.addSource("artworks", {
+						type: "geojson",
+						data: response.data.data,
+						cluster: true,
+						clusterMaxZoom: 17, // Max zoom to cluster points on
+						clusterRadius: 50, // Radius of each cluster when clustering points
+					});
 					resolve();
 				});
 			});
