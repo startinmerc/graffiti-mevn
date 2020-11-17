@@ -1,7 +1,7 @@
 <template>
 	<main id="artist-detail" class="main--shrink-wide">
 		<h1 class="padded">{{ name }}</h1>
-		<ul class="artwork-list padded">
+		<ul class="artwork-list">
 			<li v-for="artwork in artworks" :key="artwork._id">
 				<h3>{{ artwork.title }}</h3>
 				<img v-if="artwork.photos" :src="artwork.photos[0]" alt="artwork" />
@@ -46,20 +46,39 @@ export default {
 <style lang="scss">
 .artwork-list {
 	list-style: none;
+	padding: 0;
 	li {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		margin: var(--padding) 0;
+		padding: var(--padding);
+		transition: all 230ms ease-in;
 		img {
+			display: inline-block;
 			max-height: 50vh;
 			width: auto;
+			transform-origin: center;
+			z-index: -1;
 		}
 		* {
 			margin: 0;
 		}
 		&:nth-of-type(even) {
-			align-items: flex-end;
+			text-align: right;
+		}
+		&:hover {
+			background: var(--darkblue);
+			img {
+				filter: grayscale(0.2);
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 768px) {
+	.artwork-list {
+		li {
+			display: inline-block;
+			&:nth-of-type(even) {
+				text-align: left;
+			}
 		}
 	}
 }
