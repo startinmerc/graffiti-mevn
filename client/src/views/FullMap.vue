@@ -17,19 +17,17 @@ import {
 
 export default {
 	name: "FullMap",
-	mounted() {
+	async mounted() {
 		// Get API token from .env
 		mapboxgl.accessToken = process.env.VUE_APP_MAPBOX_TOKEN;
 		// Load map
-		this.loadMap().then((map) => {
-			// Add points
-			this.addPoints(map).then(() => {
-				// Add layer with points
-				this.addLayer(map);
-			});
-			// Add interactions
-			this.addMouseInteraction(map);
-		});
+		let map = await this.loadMap();
+		// Load map points
+		await this.addPoints(map);
+		// Add layer with points
+		this.addLayers(map);
+		// Add interactions
+		this.addMouseInteraction(map);
 	},
 	methods: {
 		loadMap() {
@@ -90,7 +88,7 @@ export default {
 		async addPoints(map) {
 			await loadArtworks(map);
 		},
-		addLayer(map) {
+		addLayers(map) {
 			// Adds 2 layers: "clusters" + "cluster-count"
 			addClusterLayers(map);
 			// Adds 1 layer: "artworks"
