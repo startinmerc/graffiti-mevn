@@ -33,9 +33,9 @@ export function addCursorPointer(map, [...layers]) {
 
 // Click handler for "cluster" layer
 export function clusterClickHandler(map) {
-	map.on("click", "clusters", function(e) {
+	map.on("click", "clusters", function(event) {
 		// Get cluster at selected point
-		var features = map.queryRenderedFeatures(e.point, {
+		var features = map.queryRenderedFeatures(event.point, {
 			layers: ["clusters"],
 		});
 		// Extract ID
