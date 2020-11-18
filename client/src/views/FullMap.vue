@@ -10,6 +10,7 @@ import mapboxgl from "mapbox-gl";
 // Import popup component & create class for mounting
 import ArtworkPopup from "../components/ArtworkPopup";
 import { getGeoJSON } from "../utils/api";
+import { addCursorPointer } from "../utils/mapbox";
 const ArtworkPopupClass = Vue.extend(ArtworkPopup);
 
 export default {
@@ -226,25 +227,7 @@ export default {
 				popup._update();
 			});
 
-			// Change the cursor to a pointer when the mouse is over the artworks layer.
-			map.on("mouseenter", "artworks", function() {
-				map.getCanvas().style.cursor = "pointer";
-			});
-
-			// Change it back to a pointer when it leaves.
-			map.on("mouseleave", "artworks", function() {
-				map.getCanvas().style.cursor = "";
-			});
-
-			// Change the cursor to a pointer when the mouse is over the clusters layer.
-			map.on("mouseenter", "clusters", function() {
-				map.getCanvas().style.cursor = "pointer";
-			});
-
-			// Change it back to a pointer when it leaves.
-			map.on("mouseleave", "clusters", function() {
-				map.getCanvas().style.cursor = "";
-			});
+			addCursorPointer(map, ["artworks", "clusters"]);
 		},
 	},
 };

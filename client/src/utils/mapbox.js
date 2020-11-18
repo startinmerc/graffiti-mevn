@@ -8,14 +8,16 @@ export function getStaticUrl(width, height) {
 	)}x${height}?access_token=${process.env.VUE_APP_MAPBOX_TOKEN}`;
 }
 
-export function addPointer(map, layerName) {
-	// Change the cursor to a pointer when the mouse is over the artworks layer.
-	map.on("mouseenter", layerName, function() {
-		map.getCanvas().style.cursor = "pointer";
-	});
+export function addCursorPointer(map, [...layers]) {
+	layers.forEach((layer) => {
+		// Change the cursor to a pointer when the mouse is over the layer.
+		map.on("mouseenter", layer, function() {
+			map.getCanvas().style.cursor = "pointer";
+		});
 
-	// Change it back to a pointer when it leaves.
-	map.on("mouseleave", layerName, function() {
-		map.getCanvas().style.cursor = "";
+		// Change it back to a pointer when it leaves.
+		map.on("mouseleave", layer, function() {
+			map.getCanvas().style.cursor = "";
+		});
 	});
 }
