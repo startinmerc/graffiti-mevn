@@ -90,8 +90,9 @@ export function addArtworkPopupAndZoom(map, event) {
 
 	// Center map on selcted point
 	map.flyTo({
-		center: event.features[0].geometry.coordinates,
+		center: coordinates,
 		speed: 0.8,
+		zoom: 17,
 	});
 
 	// Mount Vue component within the Vue ref div created earlier
