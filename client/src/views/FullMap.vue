@@ -7,9 +7,9 @@
 <script>
 import Vue from "vue";
 import mapboxgl from "mapbox-gl";
-import axios from "axios";
 // Import popup component & create class for mounting
 import ArtworkPopup from "../components/ArtworkPopup";
+import { getGeoJSON } from "../utils/api";
 const ArtworkPopupClass = Vue.extend(ArtworkPopup);
 
 export default {
@@ -96,18 +96,14 @@ export default {
 				});
 			});
 		},
-		addPoints(map) {
-			return new Promise((resolve) => {
-				axios.get("http://localhost:8081/api/geojson/").then((response) => {
-					map.addSource("artworks", {
-						type: "geojson",
-						data: response.data.data,
-						cluster: true,
-						clusterMaxZoom: 17, // Max zoom to cluster points on
-						clusterRadius: 50, // Radius of each cluster when clustering points
-					});
-					resolve();
-				});
+		async addPoints(map) {
+			let data = await getGeoJSON();
+			map.addSource("artworks", {
+				type: "geojson",
+				data: data.data,
+				cluster: true,
+				clusterMaxZoom: 17, // Max zoom to cluster points on
+				clusterRadius: 50, // Radius of each cluster when clustering points
 			});
 		},
 		addLayer(map) {
