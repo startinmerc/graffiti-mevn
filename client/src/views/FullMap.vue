@@ -6,13 +6,13 @@
 
 <script>
 import mapboxgl from "mapbox-gl";
-import { getGeoJSON } from "../utils/api";
 import {
 	addArtworkPopupAndZoom,
 	addArtworksLayer,
 	addClusterLayers,
 	addCursorPointer,
 	clusterClickHandler,
+	loadArtworks,
 } from "../utils/mapbox";
 
 export default {
@@ -88,14 +88,7 @@ export default {
 			});
 		},
 		async addPoints(map) {
-			let data = await getGeoJSON();
-			map.addSource("artworks", {
-				type: "geojson",
-				data: data.data,
-				cluster: true,
-				clusterMaxZoom: 17, // Max zoom to cluster points on
-				clusterRadius: 50, // Radius of each cluster when clustering points
-			});
+			await loadArtworks(map);
 		},
 		addLayer(map) {
 			// Adds 2 layers: "clusters" + "cluster-count"
