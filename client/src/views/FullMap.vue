@@ -165,7 +165,7 @@ export default {
 			// inspect a cluster on click
 			clusterClickHandler(map);
 
-			map.on("click", "artworks", (e) => {
+			map.on("click", "artworks", function(e) {
 				// Coordinates from event
 				let coordinates = e.features[0].geometry.coordinates.slice();
 				// Data from event trigger
