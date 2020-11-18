@@ -9,6 +9,8 @@ import mapboxgl from "mapbox-gl";
 import { getGeoJSON } from "../utils/api";
 import {
 	addArtworkPopupAndZoom,
+	addArtworksLayer,
+	addClusterLayers,
 	addCursorPointer,
 	clusterClickHandler,
 } from "../utils/mapbox";
@@ -96,67 +98,21 @@ export default {
 			});
 		},
 		addLayer(map) {
-			map.addLayer({
-				id: "clusters",
-				type: "circle",
-				source: "artworks",
-				filter: ["has", "point_count"],
-				paint: {
-					// 20px circles when point_count is less than 100
-					// 30px circles when point_count is between 100 and 750
-					// 40px circles when point_count is greater than or equal to 750
-					"circle-color": "#e14e6d",
-					"circle-radius": [
-						"step",
-						["get", "point_count"],
-						20,
-						100,
-						30,
-						750,
-						40,
-					],
-				},
-			});
-
-			map.addLayer({
-				id: "cluster-count",
-				type: "symbol",
-				source: "artworks",
-				filter: ["has", "point_count"],
-				layout: {
-					"text-field": "{point_count_abbreviated}",
-					// Uses Mapbox Studio fonts
-					"text-font": ["Raleway Bold"],
-					"text-size": 22,
-				},
-				paint: {
-					"text-color": "#f9f9f9",
-				},
-			});
-
-			map.addLayer({
-				id: "artworks",
-				type: "symbol",
-				source: "artworks",
-				filter: ["!", ["has", "point_count"]],
-				layout: {
-					// SVG file loaded into Mapbox Studio style
-					"icon-image": "ArtworkMarker",
-					// Allow icons to be visible over other icons
-					"icon-allow-overlap": true,
-					// Why, Mapbox, did it take me an hour to find this property in your docs?
-					"icon-anchor": "bottom",
-				},
-			});
+			// Adds 2 layers: "clusters" + "cluster-count"
+			addClusterLayers(map);
+			// Adds 1 layer: "artworks"
+			addArtworksLayer(map);
 		},
 		addMouseInteraction(map) {
 			// inspect a cluster on click
 			clusterClickHandler(map);
 
+			// Add popup & zoom to marker on click
 			map.on("click", "artworks", function(e) {
 				addArtworkPopupAndZoom(map, e);
 			});
 
+			// Add cursor change listeners to layers
 			addCursorPointer(map, ["artworks", "clusters"]);
 		},
 	},
