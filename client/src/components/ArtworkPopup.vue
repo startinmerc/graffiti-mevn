@@ -6,7 +6,7 @@
 		>
 			<div
 				v-if="photos"
-				:style="'background-image: url(' + JSON.parse(photos)[0] + ')'"
+				:style="photos && { backgroundImage: `url(${JSON.parse(photos)[0]}` }"
 				alt="artwork"
 				class="popup__image"
 			></div>
@@ -35,7 +35,7 @@ export default {
 		title: String,
 		artist: String,
 		id: String,
-		photos: String || null,
+		photos: String,
 		description: String,
 	},
 	components: {
