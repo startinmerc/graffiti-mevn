@@ -12,6 +12,7 @@ import {
 	addClusterLayers,
 	addCursorPointer,
 	clusterClickHandler,
+	handleArtworkParam,
 	loadArtworks,
 } from "../utils/mapbox";
 
@@ -70,17 +71,9 @@ export default {
 				// When map is fully loaded
 				map.on("load", () => {
 					// Find if paramater has been passed
-					const paramID = this.$route.params.id;
-					// If it has,
-					if (paramID) {
-						// Get source, find matched marker data
-						let data = map
-							.getSource("artworks")
-							._data.features.find((v) => v.properties.id === paramID);
-						// !-Convert photos array back to JSON string for ArtworkPopup
-						// !-To change
-						data.properties.photos = JSON.stringify(data.properties.photos);
-						addArtworkPopupAndZoom(map, { features: [data] });
+					if (this.$route.params.id) {
+						// If it has, execute handler
+						handleArtworkParam(map, this.$route.params.id);
 					}
 				});
 			});

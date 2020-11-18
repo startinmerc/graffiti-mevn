@@ -162,3 +162,15 @@ export async function loadArtworks(map) {
 		clusterRadius: 50, // Radius of each cluster when clustering points
 	});
 }
+
+// Finds param in source, zooms & adds popup
+export function handleArtworkParam(map, paramID) {
+	// Get source, find matched marker data
+	let data = map
+		.getSource("artworks")
+		._data.features.find((v) => v.properties.id === paramID);
+	// !-Convert photos array back to JSON string for ArtworkPopup
+	// !-To change
+	data.properties.photos = JSON.stringify(data.properties.photos);
+	addArtworkPopupAndZoom(map, { features: [data] });
+}
