@@ -8,6 +8,7 @@ export function getStaticUrl(width, height) {
 	)}x${height}?access_token=${process.env.VUE_APP_MAPBOX_TOKEN}`;
 }
 
+// Accepts one or many layer ids
 export function addCursorPointer(map, [...layers]) {
 	layers.forEach((layer) => {
 		// Change the cursor to a pointer when the mouse is over the layer.
@@ -19,5 +20,28 @@ export function addCursorPointer(map, [...layers]) {
 		map.on("mouseleave", layer, function() {
 			map.getCanvas().style.cursor = "";
 		});
+	});
+}
+
+// Click handler for "cluster" layer
+export function clusterClickHandler(map) {
+	map.on("click", "clusters", function(e) {
+		// Get cluster at selected point
+		var features = map.queryRenderedFeatures(e.point, {
+			layers: ["clusters"],
+		});
+		// Extract ID
+		var clusterId = features[0].properties.cluster_id;
+		// Find zoom level needed to show all points
+		map
+			.getSource("artworks")
+			.getClusterExpansionZoom(clusterId, function(err, zoom) {
+				if (err) return;
+				// Fly to zoom level needed
+				map.easeTo({
+					center: features[0].geometry.coordinates,
+					zoom: zoom,
+				});
+			});
 	});
 }

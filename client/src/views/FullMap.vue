@@ -10,7 +10,7 @@ import mapboxgl from "mapbox-gl";
 // Import popup component & create class for mounting
 import ArtworkPopup from "../components/ArtworkPopup";
 import { getGeoJSON } from "../utils/api";
-import { addCursorPointer } from "../utils/mapbox";
+import { addCursorPointer, clusterClickHandler } from "../utils/mapbox";
 const ArtworkPopupClass = Vue.extend(ArtworkPopup);
 
 export default {
@@ -163,22 +163,7 @@ export default {
 		},
 		addMouseInteraction(map) {
 			// inspect a cluster on click
-			map.on("click", "clusters", function(e) {
-				var features = map.queryRenderedFeatures(e.point, {
-					layers: ["clusters"],
-				});
-				var clusterId = features[0].properties.cluster_id;
-				map
-					.getSource("artworks")
-					.getClusterExpansionZoom(clusterId, function(err, zoom) {
-						if (err) return;
-
-						map.easeTo({
-							center: features[0].geometry.coordinates,
-							zoom: zoom,
-						});
-					});
-			});
+			clusterClickHandler(map);
 
 			map.on("click", "artworks", (e) => {
 				// Coordinates from event
