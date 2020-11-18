@@ -3,6 +3,7 @@ import mapboxgl from "mapbox-gl";
 // Import popup component & create class for mounting
 import ArtworkPopup from "../components/ArtworkPopup";
 const ArtworkPopupClass = Vue.extend(ArtworkPopup);
+import { getGeoJSON } from "./api";
 
 // =============
 
@@ -149,4 +150,15 @@ export const addArtworksLayer = (map) => {
 			"icon-anchor": "bottom",
 		},
 	});
-};
+}
+
+export async function loadArtworks(map) {
+	let data = await getGeoJSON();
+	map.addSource("artworks", {
+		type: "geojson",
+		data: data.data,
+		cluster: true,
+		clusterMaxZoom: 17, // Max zoom to cluster points on
+		clusterRadius: 50, // Radius of each cluster when clustering points
+	});
+}
