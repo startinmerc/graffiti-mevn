@@ -1,3 +1,11 @@
+import Vue from "vue";
+import mapboxgl from "mapbox-gl";
+// Import popup component & create class for mounting
+import ArtworkPopup from "../components/ArtworkPopup";
+const ArtworkPopupClass = Vue.extend(ArtworkPopup);
+
+// =============
+
 // Generated URL using container's dimentions for image size
 // this.$refs.mapContainer.clientWidth
 // this.$refs.mapContainer.clientHeight
@@ -44,4 +52,51 @@ export function clusterClickHandler(map) {
 				});
 			});
 	});
+}
+
+export function addArtworkPopupAndZoom(map, event) {
+	// Coordinates from event
+	let coordinates = event.features[0].geometry.coordinates.slice();
+	// Data from event trigger
+	let title = event.features[0].properties.title;
+	let artist = event.features[0].properties.artist;
+	let description = event.features[0].properties.description;
+	let id = event.features[0].properties.id;
+	let photos = event.features[0].properties.photos;
+
+	const popup = new mapboxgl.Popup({
+		// Offset bottom of popup to flow from marker pointer
+		offset: { bottom: [0, -20] },
+		// Remove max width to make it auto
+		maxWidth: "none",
+		// Remove close button
+		closeButton: false,
+	})
+		.setLngLat(coordinates)
+		// Set HTML as Vue ref div
+		.setHTML('<div id="vue-popup-content"></div>')
+		.addTo(map);
+
+	// Create new Vue component with props for Popup
+	const popupInstance = new ArtworkPopupClass({
+		propsData: {
+			title: title,
+			artist: artist,
+			id: id,
+			photos: photos,
+			description: description,
+		},
+	});
+
+	// Center map on selcted point
+	map.flyTo({
+		center: event.features[0].geometry.coordinates,
+		speed: 0.8,
+	});
+
+	// Mount Vue component within the Vue ref div created earlier
+	popupInstance.$mount("#vue-popup-content");
+
+	// Update popup after adding content to resize
+	popup._update();
 }

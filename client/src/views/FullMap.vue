@@ -5,20 +5,19 @@
 </template>
 
 <script>
-import Vue from "vue";
 import mapboxgl from "mapbox-gl";
-// Import popup component & create class for mounting
-import ArtworkPopup from "../components/ArtworkPopup";
 import { getGeoJSON } from "../utils/api";
-import { addCursorPointer, clusterClickHandler } from "../utils/mapbox";
-const ArtworkPopupClass = Vue.extend(ArtworkPopup);
+import {
+	addArtworkPopupAndZoom,
+	addCursorPointer,
+	clusterClickHandler,
+} from "../utils/mapbox";
 
 export default {
 	name: "FullMap",
 	mounted() {
 		// Get API token from .env
 		mapboxgl.accessToken = process.env.VUE_APP_MAPBOX_TOKEN;
-
 		// Load map
 		this.loadMap().then((map) => {
 			// Add points
@@ -166,50 +165,7 @@ export default {
 			clusterClickHandler(map);
 
 			map.on("click", "artworks", function(e) {
-				// Coordinates from event
-				let coordinates = e.features[0].geometry.coordinates.slice();
-				// Data from event trigger
-				let title = e.features[0].properties.title;
-				let artist = e.features[0].properties.artist;
-				let description = e.features[0].properties.description;
-				let id = e.features[0].properties.id;
-				let photos = e.features[0].properties.photos;
-
-				const popup = new mapboxgl.Popup({
-					// Offset bottom of popup to flow from marker pointer
-					offset: { bottom: [0, -20] },
-					// Remove max width to make it auto
-					maxWidth: "none",
-					// Remove close button
-					closeButton: false,
-				})
-					.setLngLat(coordinates)
-					// Set HTML as Vue ref div
-					.setHTML('<div id="vue-popup-content"></div>')
-					.addTo(map);
-
-				// Create new Vue component with props for Popup
-				const popupInstance = new ArtworkPopupClass({
-					propsData: {
-						title: title,
-						artist: artist,
-						id: id,
-						photos: photos,
-						description: description,
-					},
-				});
-
-				// Center map on selcted point
-				map.flyTo({
-					center: e.features[0].geometry.coordinates,
-					speed: 0.8,
-				});
-
-				// Mount Vue component within the Vue ref div created earlier
-				popupInstance.$mount("#vue-popup-content");
-
-				// Update popup after adding content to resize
-				popup._update();
+				addArtworkPopupAndZoom(map, e);
 			});
 
 			addCursorPointer(map, ["artworks", "clusters"]);
