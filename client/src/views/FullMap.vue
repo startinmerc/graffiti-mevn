@@ -12,7 +12,7 @@ import {
 	addClusterLayers,
 	addCursorPointer,
 	clusterClickHandler,
-	handleArtworkParam,
+	createMap,
 	loadArtworks,
 } from "../utils/mapbox";
 
@@ -32,51 +32,13 @@ export default {
 	},
 	methods: {
 		loadMap() {
-			// Async loading function to await styles
-			return new Promise((resolve) => {
-				// Max Boundaries of map
-				var bounds = [
+			return createMap({
+				bounds: [
 					[-1.167997, 53.91244], // Southwest coordinates
 					[-1.005763, 54.00422], // Northeast coordinates
-				];
-				// Create Map
-				let map = new mapboxgl.Map({
-					// Target div id
-					container: "map-container",
-					// Custom mapbox style
-					style: process.env.VUE_APP_MAPBOX_STYLE,
-					// Geolocation of map center
-					center: [-1.080278, 53.958332],
-					// Default zoom level
-					zoom: 13,
-					// Add maxBounds
-					maxBounds: bounds,
-				});
-
-				// Add control for geolocation of user
-				map.addControl(
-					new mapboxgl.GeolocateControl({
-						positionOptions: {
-							enableHighAccuracy: true,
-						},
-						trackUserLocation: true,
-					})
-				);
-				// Resolve Promise when styling is loaded,
-				// Prevents Vue error
-				map.on("styledata", () => {
-					// Send mapBox to pass through to other methods
-					resolve(map);
-				});
-
-				// When map is fully loaded
-				map.on("load", () => {
-					// Find if paramater has been passed
-					if (this.$route.params.id) {
-						// If it has, execute handler
-						handleArtworkParam(map, this.$route.params.id);
-					}
-				});
+				],
+				center: [-1.080278, 53.958332],
+				params: this.$route.params,
 			});
 		},
 		async addPoints(map) {

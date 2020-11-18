@@ -17,6 +17,52 @@ export function getStaticUrl(width, height) {
 	)}x${height}?access_token=${process.env.VUE_APP_MAPBOX_TOKEN}`;
 }
 
+// Create map
+export function createMap({ bounds, center, params }) {
+	// Async loading function to await styles
+	return new Promise((resolve) => {
+		// Create Map
+		let map = new mapboxgl.Map({
+			// Target div id
+			container: "map-container",
+			// Custom mapbox style
+			style: process.env.VUE_APP_MAPBOX_STYLE,
+			// Geolocation of map center
+			center: center,
+			// Default zoom level
+			zoom: 13,
+			// Add maxBounds
+			maxBounds: bounds,
+		});
+
+		// Add control for geolocation of user
+		map.addControl(
+			new mapboxgl.GeolocateControl({
+				positionOptions: {
+					enableHighAccuracy: true,
+				},
+				trackUserLocation: true,
+			})
+		);
+
+		// Resolve Promise when styling is loaded,
+		// Prevents Vue error
+		map.on("styledata", () => {
+			// Send mapBox to pass through to other methods
+			resolve(map);
+		});
+
+		// When map is fully loaded
+		map.on("load", () => {
+			// Find if paramater has been passed
+			if (params.id) {
+				// If it has, execute handler
+				handleArtworkParam(map, params.id);
+			}
+		});
+	});
+}
+
 // Accepts one or many layer ids
 export function addCursorPointer(map, [...layers]) {
 	layers.forEach((layer) => {
