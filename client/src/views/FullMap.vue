@@ -72,26 +72,15 @@ export default {
 					// Find if paramater has been passed
 					const paramID = this.$route.params.id;
 					// If it has,
-					if (paramID !== undefined) {
-						// Set timeout (avoids async errors, probably a better way)
-						// !-See https://github.com/mapbox/mapbox-gl-js/issues/4222#issuecomment-279446075
-						setTimeout(function() {
-							// Get artworks layer from map
-							let features = map.queryRenderedFeatures({
-								layers: ["artworks"],
-							});
-							// Filter markers by param to find matching one
-							let marker = features.filter(
-								(i) => i.properties.id === paramID
-							)[0];
-							// !-Fly to location (To be refactored)
-							map.flyTo({
-								center: marker.geometry.coordinates,
-								speed: 0.8,
-								zoom: 17,
-							});
-							// !-Arbitrary timeout
-						}, 500);
+					if (paramID) {
+						// Get source, find matched marker data
+						let data = map
+							.getSource("artworks")
+							._data.features.find((v) => v.properties.id === paramID);
+						// !-Convert photos array back to JSON string for ArtworkPopup
+						// !-To change
+						data.properties.photos = JSON.stringify(data.properties.photos);
+						addArtworkPopupAndZoom(map, { features: [data] });
 					}
 				});
 			});
