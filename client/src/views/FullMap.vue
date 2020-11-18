@@ -62,7 +62,8 @@ export default {
 						trackUserLocation: true,
 					})
 				);
-				// Resolve Promise when styling is loaded
+				// Resolve Promise when styling is loaded,
+				// Prevents Vue error
 				map.on("styledata", () => {
 					// Send mapBox to pass through to other methods
 					resolve(map);

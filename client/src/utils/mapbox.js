@@ -135,7 +135,7 @@ export function addClusterLayers(map) {
 	});
 }
 
-export const addArtworksLayer = (map) => {
+export function addArtworksLayer(map) {
 	map.addLayer({
 		id: "artworks",
 		type: "symbol",
