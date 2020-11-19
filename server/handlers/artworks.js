@@ -1,6 +1,6 @@
 const db = require("../models");
 
-exports.createArtwork = async (req, res, next) => {
+exports._createArtwork = async (req, res, next) => {
 	try {
 		// Create new Artwork
 		let artwork = await db.Artwork.create(req.body);
@@ -22,6 +22,10 @@ exports.createArtwork = async (req, res, next) => {
 		return next(err);
 	}
 };
+
+exports.createArtwork = (req,res,next)=>{
+	return res.status(201).json(req.body, req.files);
+}
 
 exports.getArtwork = async (req, res, next) => {
 	try {
