@@ -4,13 +4,13 @@
 		<ul class="artwork-list">
 			<li v-for="artwork in artworks" :key="artwork._id">
 				<router-link
-					:to="{ name: 'ArtworkDetail', params: { id: artwork._id } }"
+					:to="{ name: 'ArtworkDetail', params: { artworkID: artwork._id } }"
 					><h3>{{ artwork.title }}</h3>
 					<img v-if="artwork.photos" :src="artwork.photos[0]" alt="artwork"
 				/></router-link>
 				<p>
 					<router-link
-						:to="{ name: 'ArtworkOnMap', params: { id: artwork._id } }"
+						:to="{ name: 'ArtworkOnMap', params: { artworkID: artwork._id } }"
 						>View on map</router-link
 					>
 				</p>
@@ -36,7 +36,7 @@ export default {
 	methods: {
 		async findArtist() {
 			// API call to find artist from supplied id
-			let artist = await getArtist(this.$route.params.id);
+			let artist = await getArtist(this.$route.params.artistID);
 			// If result found
 			if (artist) {
 				// Set data

@@ -26,18 +26,17 @@ const routes = [
 		component: FullMap,
 	},
 	{
-		path: "/map/:id",
+		path: "/map/:artworkID",
 		name: "ArtworkOnMap",
 		component: FullMap,
-		props: true,
 	},
 	{
-		path: "/artwork/:id",
+		path: "/artwork/:artworkID",
 		name: "ArtworkDetail",
 		component: ArtworkDetail,
 	},
 	{
-		path: "/artist/:id",
+		path: "/artist/:artistID",
 		name: "ArtistDetail",
 		component: ArtistDetail,
 	},

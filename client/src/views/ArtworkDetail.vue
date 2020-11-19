@@ -11,7 +11,7 @@
 			<h1>{{ title }}</h1>
 			<router-link
 				v-if="artist"
-				:to="{ name: 'ArtistDetail', params: { id: artist._id } }"
+				:to="{ name: 'ArtistDetail', params: { artistID: artist._id } }"
 				><b>{{ artist }}</b></router-link
 			>
 			<p v-if="description">{{ description }}</p>

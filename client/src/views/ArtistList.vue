@@ -9,7 +9,7 @@
 				:style="{ backgroundImage: `url(${getRandomPhoto(artist.artworks)}` }"
 			>
 				<router-link
-					:to="{ name: 'ArtistDetail', params: { id: artist._id } }"
+					:to="{ name: 'ArtistDetail', params: { artistID: artist._id } }"
 					>{{ artist.name }}</router-link
 				>
 			</li>
