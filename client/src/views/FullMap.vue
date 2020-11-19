@@ -30,6 +30,11 @@ export default {
 		// Add interactions
 		this.addMouseInteraction(map);
 	},
+	watch: {
+		// !-Watch route for changes,
+		// !-Will refresh map or act on params eventually
+		$route: function(){console.log(this.$route.params)},
+	},
 	methods: {
 		loadMap() {
 			return createMap({

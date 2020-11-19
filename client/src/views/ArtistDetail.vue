@@ -16,6 +16,8 @@
 				</p>
 			</li>
 		</ul>
+		<!-- !-Param will change eventually -->
+		<router-link :to="{name:'ArtistOnMap',params: {artistID: name}}">View artworks on map</router-link>
 	</main>
 </template>
 

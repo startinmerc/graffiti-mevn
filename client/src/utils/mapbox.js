@@ -224,5 +224,7 @@ export function handleArtworkParam(map, paramID) {
 }
 
 export function handleArtistParam(map, paramID) {
+	// !-Artist ID atm has to be name
 	map.setFilter("artworks", ["==", ["get", "artist"], paramID]);
+	// !-Also map cluster layers need to refresh somehow
 }
