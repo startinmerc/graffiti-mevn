@@ -31,6 +31,11 @@ const routes = [
 		component: FullMap,
 	},
 	{
+		path: "/map/:artistID",
+		name: "ArtistOnMap",
+		component: FullMap,
+	},
+	{
 		path: "/artwork/:artworkID",
 		name: "ArtworkDetail",
 		component: ArtworkDetail,
