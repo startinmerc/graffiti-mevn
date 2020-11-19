@@ -1,7 +1,7 @@
 <template>
 	<main>
 		<h1>Submit an artwork</h1>
-		<form @submit.prevent="submitForm">
+		<form @submit.prevent="submitForm" enctype="multipart/form-data">
 			<div class="form-group">
 				<label for="title">Title</label>
 				<input type="text" v-model="title" placeholder="Artwork Title" />
@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { getAllArtists } from "../utils/api";
+import { getAllArtists, postArtwork } from "../utils/api";
 
 export default {
 	name: "SubmitArtwork",
@@ -86,14 +86,29 @@ export default {
 			this.photo = event.target.files[0];
 		},
 		async submitForm() {
-			console.table([
-				{ name: "title", data: this.title },
-				{ name: "artist", data: this.selectedArtist },
-				{ name: "description", data: this.description },
-				{ name: "photo", data: this.photo.name },
-				{ name: "long", data: this.coord_long },
-				{ name: "lat", data: this.coord_lat },
-			]);
+			let formData = new FormData();
+			formData.append("title", this.title);
+			formData.append("description", this.description);
+			formData.append("artist", this.selectedArtist);
+			formData.append("photo", this.photo);
+			formData.append("coord_long", this.coord_long);
+			formData.append("coord_lat", this.coord_lat);
+			try {
+				let res = await postArtwork(formData);
+				this.handleSuccess(res);
+			} catch (err) {
+				console.log(err);
+			}
+		},
+		handleSuccess(res) {
+			console.log(res);
+			this.artists = [];
+			this.title = "";
+			this.selectedArtist = "";
+			this.description = "";
+			this.photo = null;
+			this.coord_long = -1.080278;
+			this.coord_lat = 53.958332;
 		},
 	},
 };
