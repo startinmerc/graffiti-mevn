@@ -13,6 +13,7 @@
 					<li><router-link :to="{name: 'Homepage'}">Home</router-link></li>
 					<li><router-link :to="{name: 'FullMap'}">Map</router-link></li>
 					<li><router-link :to="{name: 'ArtistList'}">Artists</router-link></li>
+					<li><router-link :to="{name: 'SubmitArtwork'}">Submit Artwork</router-link></li>
 					<li><router-link :to="{name: 'About'}">About</router-link></li>
 				</ul>
 			</div>
