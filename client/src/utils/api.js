@@ -11,7 +11,9 @@ const isLocalhost = Boolean(
 		)
 );
 
-let url = isLocalhost ? "http://localhost:8081":"https://graffiti-explorer-backend.herokuapp.com";
+let url = isLocalhost
+	? "http://localhost:8081"
+	: "https://graffiti-explorer-backend.herokuapp.com";
 
 export function getGeoJSON() {
 	return new Promise((resolve) => {
@@ -39,10 +41,16 @@ export function getArtist(id) {
 
 export function getArtwork(query) {
 	return new Promise((resolve) => {
-		axios
-			.get(`${url}/api/artworks/${query}`)
-			.then((response) => {
-				resolve(response.data);
-			});
+		axios.get(`${url}/api/artworks/${query}`).then((response) => {
+			resolve(response.data);
+		});
+	});
+}
+
+export function postArtwork(data) {
+	return new Promise((resolve) => {
+		axios.post(`${url}/api/artworks`, {data}).then((response) => {
+			resolve(response.data);
+		});
 	});
 }
