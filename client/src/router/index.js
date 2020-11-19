@@ -27,6 +27,7 @@ const routes = [
 	},
 	{
 		path: "/map/:id",
+		name: "ArtworkOnMap",
 		component: FullMap,
 		props: true,
 	},

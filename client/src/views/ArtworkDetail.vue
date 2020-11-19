@@ -9,9 +9,13 @@
 		</div>
 		<div class="padded">
 			<h1>{{ title }}</h1>
-			<router-link v-if="artist" :to="`/artist/${artist}`"><b>{{ artist }}</b></router-link>
+			<router-link
+				v-if="artist"
+				:to="{ name: 'ArtistDetail', params: { id: artist._id } }"
+				><b>{{ artist }}</b></router-link
+			>
 			<p v-if="description">{{ description }}</p>
-			<router-link to="/map" class="button">
+			<router-link :to="{name: 'FullMap'}" class="button">
 				<icon-base icon-name="arrow-right" height="15" width="15">
 					<ArrowRight />
 				</icon-base>

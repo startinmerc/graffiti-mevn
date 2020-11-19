@@ -1,7 +1,7 @@
 <template>
 	<nav>
 		<p id="nav-logo">
-			<router-link to="/">York<br />Graffiti<br />Explorer</router-link>
+			<router-link :to="{name: 'Homepage'}">York<br />Graffiti<br />Explorer</router-link>
 		</p>
 		<button @click="toggleMenu" role="show menu">
 			<MenuIcon :menuOpen="menuOpen" />
@@ -10,10 +10,10 @@
 			<div class="menu" v-if="menuOpen" @click="toggleMenu">
 				<div class="backdrop"></div>
 				<ul>
-					<li><router-link to="/">Home</router-link></li>
-					<li><router-link to="/map">Map</router-link></li>
-					<li><router-link to="/artists">Artists</router-link></li>
-					<li><router-link to="/about">About</router-link></li>
+					<li><router-link :to="{name: 'Homepage'}">Home</router-link></li>
+					<li><router-link :to="{name: 'FullMap'}">Map</router-link></li>
+					<li><router-link :to="{name: 'ArtistList'}">Artists</router-link></li>
+					<li><router-link :to="{name: 'About'}">About</router-link></li>
 				</ul>
 			</div>
 		</transition>

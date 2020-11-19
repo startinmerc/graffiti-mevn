@@ -5,11 +5,11 @@
 			Graffiti<br />
 			Explorer
 		</h1>
-		<router-link to="/map" class="button">
-				View the map
-				<icon-base icon-name="arrow-right">
-					<ArrowRight />
-				</icon-base>
+		<router-link :to="{ name: 'FullMap' }" class="button">
+			View the map
+			<icon-base icon-name="arrow-right">
+				<ArrowRight />
+			</icon-base>
 		</router-link>
 	</main>
 </template>
