@@ -59,6 +59,8 @@
 			</div>
 			<button type="submit">Submit Artwork</button>
 		</form>
+		<p v-if="sending">Sending...</p>
+		<p v-if="submitted">Submitted!</p>
 	</main>
 </template>
 
@@ -76,6 +78,8 @@ export default {
 			photo: null,
 			coord_long: -1.080278,
 			coord_lat: 53.958332,
+			sending: false,
+			submitted: false,
 		};
 	},
 	async mounted() {
@@ -94,6 +98,7 @@ export default {
 			formData.append("coord_long", this.coord_long);
 			formData.append("coord_lat", this.coord_lat);
 			try {
+				this.sending = true;
 				let res = await postArtwork(formData);
 				this.handleSuccess(res);
 			} catch (err) {
@@ -102,6 +107,8 @@ export default {
 		},
 		handleSuccess(res) {
 			console.log(res);
+			this.sending = false;
+			this.submitted = true;
 			this.artists = [];
 			this.title = "";
 			this.selectedArtist = "";
