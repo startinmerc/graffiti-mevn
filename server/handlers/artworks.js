@@ -1,9 +1,16 @@
 const db = require("../models");
 
-exports.createArtwork = async (req, res, next) => {
+exports._createArtwork = async (req, res, next) => {
 	try {
 		// Create new Artwork
 		let artwork = await db.Artwork.create(req.body);
+		// Map uploaded images to array + add to artwork
+		artwork.photos = req.files.map((file) => ({
+			url: file.path,
+			filename: file.filename,
+		}));
+		// Save change to artwork
+		await artwork.save();
 		// Find artist supplied from params
 		let foundArtist = await db.Artist.findById(req.body.artist);
 		// Add artwork id to found artist
