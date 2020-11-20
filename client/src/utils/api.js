@@ -49,7 +49,7 @@ export function getArtwork(query) {
 
 export function postArtwork(data) {
 	return new Promise((resolve) => {
-		axios.post(`${url}/api/artworks`, {data}).then((response) => {
+		axios.post(`${url}/api/artworks`, data).then((response) => {
 			resolve(response.data);
 		});
 	});
