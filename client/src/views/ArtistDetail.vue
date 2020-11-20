@@ -6,7 +6,7 @@
 				<router-link
 					:to="{ name: 'ArtworkDetail', params: { artworkID: artwork._id } }"
 					><h3>{{ artwork.title }}</h3>
-					<img v-if="artwork.photos" :src="artwork.photos[0]" alt="artwork"
+					<img v-if="artwork.photos" :src="artwork.photos[0].url" alt="artwork"
 				/></router-link>
 				<p>
 					<router-link
@@ -17,7 +17,9 @@
 			</li>
 		</ul>
 		<!-- !-Param will change eventually -->
-		<router-link :to="{name:'ArtistOnMap',params: {artistID: name}}">View artworks on map</router-link>
+		<router-link :to="{ name: 'ArtistOnMap', params: { artistID: name } }"
+			>View artworks on map</router-link
+		>
 	</main>
 </template>
 

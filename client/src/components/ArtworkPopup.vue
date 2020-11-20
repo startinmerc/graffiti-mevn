@@ -2,11 +2,13 @@
 	<div class="artwork-popup">
 		<div
 			class="placeholder"
-			:style="photos && { backgroundImage: `url(${JSON.parse(photos)[0]}` }"
+			:style="photos && { backgroundImage: `url(${JSON.parse(photos)[0].url}` }"
 		>
 			<div
 				v-if="photos"
-				:style="photos && { backgroundImage: `url(${JSON.parse(photos)[0]}` }"
+				:style="
+					photos && { backgroundImage: `url(${JSON.parse(photos)[0].url}` }
+				"
 				alt="artwork"
 				class="popup__image"
 			></div>

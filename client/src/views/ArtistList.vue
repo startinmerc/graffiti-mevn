@@ -36,9 +36,8 @@ export default {
 			let artwork =
 				artworks[this.getRandomIntInclusive(0, artworks.length - 1)];
 			let url =
-				artwork.photos[
-					this.getRandomIntInclusive(0, artwork.photos.length - 1)
-				];
+				artwork.photos[this.getRandomIntInclusive(0, artwork.photos.length - 1)]
+					.url;
 			return url;
 		},
 		// MATHS
