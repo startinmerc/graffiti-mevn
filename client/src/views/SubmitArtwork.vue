@@ -60,7 +60,14 @@
 			<button type="submit">Submit Artwork</button>
 		</form>
 		<p v-if="sending">Sending...</p>
-		<p v-if="submitted">Submitted!</p>
+		<div v-if="submitted">
+			<p>Submitted!</p>
+			<router-link
+				:to="{ name: 'ArtworkOnMap', params: { artworkID: newArtworkID } }"
+				>View on map</router-link
+			>
+		</div>
+		<p v-if="failure">Upload failed :(</p>
 	</main>
 </template>
 
@@ -80,6 +87,8 @@ export default {
 			coord_lat: 53.958332,
 			sending: false,
 			submitted: false,
+			failure: false,
+			newArtworkID: null,
 		};
 	},
 	async mounted() {
@@ -102,11 +111,13 @@ export default {
 				let res = await postArtwork(formData);
 				this.handleSuccess(res);
 			} catch (err) {
+				this.sending = false;
+				this.failure = true;
 				console.log(err);
 			}
 		},
 		handleSuccess(res) {
-			console.log(res);
+			this.newArtworkID = res._id;
 			this.sending = false;
 			this.submitted = true;
 			this.artists = [];
