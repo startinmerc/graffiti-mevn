@@ -7,6 +7,7 @@
 				<input type="text" v-model="title" placeholder="Artwork Title" />
 			</div>
 			<div class="form-group">
+				<label for="artist">Artist</label>
 				<select v-model="selectedArtist">
 					<option disabled value="">Please select one</option>
 					<option
