@@ -21,7 +21,8 @@ const artworkSchema = new mongoose.Schema(
 		},
 		photos: [
 			{
-				type: String,
+				url: String,
+				filename: String,
 			},
 		],
 	},

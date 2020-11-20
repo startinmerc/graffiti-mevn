@@ -11,7 +11,9 @@ const artworks = [
 		description:
 			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex in illo quasi, repellat soluta porro architecto? Facilis distinctio natus iste illum quaerat provident debitis, numquam molestiae! Fuga similique officiis laboriosam!",
 		artist: artist1._id,
-		photos: ["https://picsum.photos/seed/test-1/200/300"],
+		photos: [
+			{ url: "https://picsum.photos/seed/test-1/200/300", filename: "test-1" },
+		],
 	},
 	{
 		title: "test data 2",
@@ -19,7 +21,9 @@ const artworks = [
 		description:
 			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex in illo quasi, repellat soluta porro architecto? Facilis distinctio natus iste illum quaerat provident debitis, numquam molestiae! Fuga similique officiis laboriosam!",
 		artist: artist2._id,
-		photos: ["https://picsum.photos/seed/test-2/200/300"],
+		photos: [
+			{ url: "https://picsum.photos/seed/test-2/200/300", filename: "test-2" },
+		],
 	},
 	{
 		title: "test data 3",
@@ -27,7 +31,9 @@ const artworks = [
 		description:
 			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex in illo quasi, repellat soluta porro architecto? Facilis distinctio natus iste illum quaerat provident debitis, numquam molestiae! Fuga similique officiis laboriosam!",
 		artist: artist1._id,
-		photos: ["https://picsum.photos/seed/test-3/200/300"],
+		photos: [
+			{ url: "https://picsum.photos/seed/test-3/200/300", filename: "test-3" },
+		],
 	},
 	{
 		title: "test data 4",
@@ -35,7 +41,9 @@ const artworks = [
 		description:
 			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex in illo quasi, repellat soluta porro architecto? Facilis distinctio natus iste illum quaerat provident debitis, numquam molestiae! Fuga similique officiis laboriosam!",
 		artist: artist2._id,
-		photos: ["https://picsum.photos/seed/test-4/200/300"],
+		photos: [
+			{ url: "https://picsum.photos/seed/test-4/200/300", filename: "test-4" },
+		],
 	},
 	{
 		title: "test data 5",
@@ -43,7 +51,9 @@ const artworks = [
 		description:
 			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex in illo quasi, repellat soluta porro architecto? Facilis distinctio natus iste illum quaerat provident debitis, numquam molestiae! Fuga similique officiis laboriosam!",
 		artist: artist2._id,
-		photos: ["https://picsum.photos/seed/test-5/200/300"],
+		photos: [
+			{ url: "https://picsum.photos/seed/test-5/200/300", filename: "test-5" },
+		],
 	},
 ];
 
@@ -56,7 +66,7 @@ async function addArtwork(i) {
 		artist: i.artist,
 		photos: i.photos,
 	});
-	let foundArtist = await Artist.findById(i.artist)
+	let foundArtist = await Artist.findById(i.artist);
 	foundArtist.artworks.push(newArtwork._id);
 	await foundArtist.save();
 	return;
