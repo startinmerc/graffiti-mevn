@@ -5,7 +5,7 @@
 			:style="photos && { backgroundImage: `url(${photos[0].url}` }"
 		>
 			<!-- Show photo if found -->
-			<img v-if="photos" :src="photos[0]" alt="artwork" />
+			<img v-if="photos" :src="photos[0].url" alt="artwork" />
 		</div>
 		<div class="padded">
 			<h1>{{ title }}</h1>
