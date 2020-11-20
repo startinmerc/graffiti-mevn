@@ -1,5 +1,8 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
+const multer = require("multer");
+const { storage } = require("../cloudinary");
+const upload = multer({storage});
 
 const {
 	getArtwork,
@@ -9,7 +12,7 @@ const {
 	deleteArtwork,
 } = require("../handlers/artworks");
 
-router.route("/").post(createArtwork);
+router.route("/").post(upload.array("photo"), createArtwork);
 router.route("/:query").get(getArtwork);
 router.route("/:query").put(editArtwork);
 router.route("/:query").delete(deleteArtwork);
