@@ -12,7 +12,7 @@
 			<router-link
 				v-if="artist"
 				:to="{ name: 'ArtistDetail', params: { artistID: artist._id } }"
-				><b>{{ artist }}</b></router-link
+				><b>{{ artist.name }}</b></router-link
 			>
 			<p v-if="description">{{ description }}</p>
 			<router-link :to="{ name: 'FullMap' }" class="button">
@@ -58,11 +58,11 @@ export default {
 	},
 	methods: {
 		async findArtwork() {
-			let artwork = await getArtwork(this.$route.params.id);
+			let artwork = await getArtwork(this.$route.params.artworkID);
 			if (artwork) {
 				this.title = artwork.title;
 				this.description = artwork.description;
-				this.artist = artwork.artist.name;
+				this.artist = artwork.artist;
 				this.photos = artwork.photos;
 			} else {
 				this.title = "Artwork not found";
