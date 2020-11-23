@@ -2,12 +2,12 @@
 	<div class="artwork-popup">
 		<div
 			class="placeholder"
-			:style="photos && { backgroundImage: `url(${JSON.parse(photos)[0].url}` }"
+			:style="photos.length > 0 && { backgroundImage: `url(${photos[0].url}` }"
 		>
 			<div
-				v-if="photos"
+				v-if="photos.length > 0"
 				:style="
-					photos && { backgroundImage: `url(${JSON.parse(photos)[0].url}` }
+					photos.length > 0 && { backgroundImage: `url(${photos[0].url}` }
 				"
 				alt="artwork"
 				class="popup__image"
@@ -44,6 +44,10 @@ export default {
 		IconBase,
 		ArrowRight,
 	},
+	mounted() {
+		// Convert photos string to array on load
+		this.photos = JSON.parse(this.photos);
+	},
 	methods: {
 		viewDetail() {
 			router.push({
@@ -73,7 +77,7 @@ export default {
 .mapboxgl-popup {
 	--padding: 5px;
 	.placeholder {
-		min-height: 50px;
+		min-height: 100px;
 		// Widen to compensate for .mapbox-popup-content padding
 		width: calc(100% + var(--padding) * 2);
 		margin-left: calc(0px - var(--padding));

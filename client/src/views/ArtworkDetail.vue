@@ -2,18 +2,20 @@
 	<main id="artwork-detail" class="main--shrink-wide">
 		<div
 			class="placeholder"
-			:style="photos && { backgroundImage: `url(${photos[0].url}` }"
+			:style="photos.length > 0 && { backgroundImage: `url(${photos[0].url}` }"
 		>
 			<!-- Show photo if found -->
-			<img v-if="photos" :src="photos[0].url" alt="artwork" />
+			<img v-if="photos.length > 0" :src="photos[0].url" alt="artwork" />
 		</div>
 		<div class="padded">
 			<h1>{{ title }}</h1>
-			<router-link
-				v-if="artist"
-				:to="{ name: 'ArtistDetail', params: { artistID: artist._id } }"
-				><b>{{ artist.name }}</b></router-link
-			>
+			<p>
+				<router-link
+					v-if="artist"
+					:to="{ name: 'ArtistDetail', params: { artistID: artist._id } }"
+					><b>{{ artist.name }}</b></router-link
+				>
+			</p>
 			<p v-if="description">{{ description }}</p>
 			<router-link :to="{ name: 'FullMap' }" class="button">
 				<icon-base icon-name="arrow-right" height="15" width="15">
@@ -35,9 +37,9 @@ export default {
 	data: function() {
 		return {
 			title: "",
-			artist: undefined,
-			description: undefined,
-			photos: undefined,
+			artist: "",
+			description: "",
+			photos: [],
 		};
 	},
 	components: {

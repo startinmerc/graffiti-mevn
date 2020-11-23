@@ -60,6 +60,7 @@ export default {
 	--black: #221e1d;
 	--white: #f9f9f9;
 	--padding: 15px;
+	--placeholder-gradient: linear-gradient(132.18deg, #33405c 0%, #afdee4 100%);
 }
 
 // Extra small devices (portrait phones, less than 576px)
@@ -132,6 +133,9 @@ main {
 	top: 90px;
 	width: 100%;
 	min-height: calc(100vh - 90px);
+	&.padded {
+		width: calc(100% - 2 * var(--padding));
+	}
 }
 
 @media screen and (min-width: 768px) {
@@ -144,7 +148,7 @@ main {
 // Placeholder for artwork image
 .placeholder {
 	// Gradient backgrounds
-	background-image: linear-gradient(132.18deg, #33405c 0%, #afdee4 100%);
+	background-image: var(--placeholder-gradient);
 }
 // Style background image if one is loaded
 .placeholder:not(:empty) {

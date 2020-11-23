@@ -6,8 +6,14 @@
 				<router-link
 					:to="{ name: 'ArtworkDetail', params: { artworkID: artwork._id } }"
 					><h3>{{ artwork.title }}</h3>
-					<img v-if="artwork.photos" :src="artwork.photos[0].url" alt="artwork"
-				/></router-link>
+					<div class="placeholder">
+						<img
+							v-if="artwork.photos.length > 0"
+							:src="artwork.photos[0].url"
+							alt="artwork"
+						/>
+					</div>
+				</router-link>
 				<p>
 					<router-link
 						:to="{ name: 'ArtworkOnMap', params: { artworkID: artwork._id } }"
@@ -17,7 +23,9 @@
 			</li>
 		</ul>
 		<!-- !-Param will change eventually -->
-		<router-link v-if="name" :to="{ name: 'ArtistOnMap', params: { artistID: name } }"
+		<router-link
+			v-if="name"
+			:to="{ name: 'ArtistOnMap', params: { artistID: name } }"
 			>View artworks on map</router-link
 		>
 	</main>
@@ -62,6 +70,17 @@ export default {
 	li {
 		padding: var(--padding);
 		transition: all 230ms ease-in;
+		.placeholder {
+			&:empty {
+				height: 30vh;
+				min-height: 200px;
+				width: 25vw;
+				min-width: 200px;
+			}
+			&:not(:empty) {
+				background: none;
+			}
+		}
 		img {
 			display: inline-block;
 			max-height: 50vh;

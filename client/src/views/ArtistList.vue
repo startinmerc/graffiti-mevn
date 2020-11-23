@@ -6,7 +6,7 @@
 				class="placeholder"
 				v-for="artist in artists"
 				:key="artist._id"
-				:style="{ backgroundImage: `url(${getRandomPhoto(artist.artworks)}` }"
+				:style="{ backgroundImage: `${getRandomPhoto(artist.artworks)}` }"
 			>
 				<router-link
 					:to="{ name: 'ArtistDetail', params: { artistID: artist._id } }"
@@ -35,10 +35,13 @@ export default {
 		getRandomPhoto(artworks) {
 			let artwork =
 				artworks[this.getRandomIntInclusive(0, artworks.length - 1)];
+			if (artwork.photos.length < 1) {
+				return 'var(--placeholder-gradient)';
+			}
 			let url =
 				artwork.photos[this.getRandomIntInclusive(0, artwork.photos.length - 1)]
 					.url;
-			return url;
+			return `url(${url}`;
 		},
 		// MATHS
 		getRandomIntInclusive(min, max) {
@@ -56,7 +59,6 @@ export default {
 	padding: 0;
 	li {
 		height: 30vh;
-		width: calc(100% - var(--padding) * 2);
 		margin: 10px 0;
 		display: grid;
 		place-items: center;
