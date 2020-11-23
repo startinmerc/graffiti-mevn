@@ -1,6 +1,6 @@
 const db = require("../models");
 
-exports._createArtwork = async (req, res, next) => {
+exports.createArtwork = async (req, res, next) => {
 	try {
 		// Create new Artwork
 		let artwork = await db.Artwork.create(req.body);
