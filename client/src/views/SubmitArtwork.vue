@@ -1,5 +1,5 @@
 <template>
-	<main>
+	<main id="submit-artwork" class="main--shrink-wide">
 		<h1>Submit an artwork</h1>
 		<form @submit.prevent="submitForm" enctype="multipart/form-data">
 			<div class="form-group">
@@ -16,7 +16,19 @@
 						:value="artist._id"
 						>{{ artist.name }}</option
 					>
+					<option :value="null">Other...</option>
 				</select>
+			</div>
+			<div v-if="selectedArtist === null">
+				<label for="newArtist"
+					>New Artist:
+					<input
+						type="text"
+						name="newArtist"
+						id="newArtist"
+						v-model="newArtist"
+					/>
+				</label>
 			</div>
 			<div class="form-group">
 				<label for="description">Description</label>
@@ -30,7 +42,8 @@
 				<label for="photo">Upload photo</label>
 				<input type="file" @change="selectPhoto" ref="photo" accept="image/*" />
 			</div>
-			<div class="form-group">
+			<p v-if="exif === 'missing'">Geodata missing from image</p>
+			<div v-if="exif === 'missing'" class="form-group">
 				<label for="coord_long">
 					Longitude
 				</label>
@@ -44,7 +57,7 @@
 					step="0.000001"
 				/>
 			</div>
-			<div class="form-group">
+			<div v-if="exif === 'missing'" class="form-group">
 				<label for="coord_lat">
 					Latitude
 				</label>
@@ -73,6 +86,7 @@
 </template>
 
 <script>
+import EXIF from "exif-js";
 import { getAllArtists, postArtwork } from "../utils/api";
 
 export default {
@@ -90,6 +104,8 @@ export default {
 			submitted: false,
 			failure: false,
 			newArtworkID: null,
+			exif: null,
+			newArtist: null,
 		};
 	},
 	async mounted() {
@@ -98,12 +114,37 @@ export default {
 	methods: {
 		selectPhoto(event) {
 			this.photo = event.target.files[0];
+			let vm = this;
+			EXIF.getData(event.target.files[0], function() {
+				if (this.exifdata.GPSLongitude && this.exifdata.GPSLatitude) {
+					vm.exif = this.exifdata;
+					vm.coord_long = vm.convertGPS(
+						vm.exif.GPSLongitude,
+						vm.exif.GPSLongitudeRef
+					);
+					vm.coord_lat = vm.convertGPS(
+						vm.exif.GPSLatitude,
+						vm.exif.GPSLatitudeRef
+					);
+				} else {
+					vm.exif = "missing";
+				}
+			});
+		},
+		convertGPS(arr, pole) {
+			let dec = arr[0] + arr[1] / 60 + arr[2] / 3600;
+			return pole === "S" || pole === "W"
+				? dec.toFixed(6) * -1
+				: dec.toFixed(6) * 1;
 		},
 		async submitForm() {
 			let formData = new FormData();
 			formData.append("title", this.title);
 			formData.append("description", this.description);
-			formData.append("artist", this.selectedArtist);
+			formData.append(
+				"artist",
+				this.selectedArtist ? this.selectedArtist : this.newArtist
+			);
 			formData.append("photo", this.photo);
 			formData.append("coord_long", this.coord_long);
 			formData.append("coord_lat", this.coord_lat);
@@ -133,4 +174,21 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss">
+#submit-artwork {
+	text-align: center;
+	form {
+		font-size: 1.1rem;
+	}
+	.form-group {
+		padding: var(--padding);
+		label {
+			display: block;
+		}
+	}
+	input,
+	select {
+		font-size: inherit;
+	}
+}
+</style>
