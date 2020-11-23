@@ -100,6 +100,28 @@ export default {
 	methods: {
 		selectPhoto(event) {
 			this.photo = event.target.files[0];
+			let vm = this;
+			EXIF.getData(event.target.files[0], function() {
+				if (this.exifdata.GPSLongitude && this.exifdata.GPSLatitude) {
+					vm.exif = this.exifdata;
+					vm.coord_long = vm.convertGPS(
+						vm.exif.GPSLongitude,
+						vm.exif.GPSLongitudeRef
+					);
+					vm.coord_lat = vm.convertGPS(
+						vm.exif.GPSLatitude,
+						vm.exif.GPSLatitudeRef
+					);
+				} else {
+					vm.exif = "missing";
+				}
+			});
+		},
+		convertGPS(arr, pole) {
+			let dec = arr[0] + arr[1] / 60 + arr[2] / 3600;
+			return pole === "S" || pole === "W"
+				? dec.toFixed(6) * -1
+				: dec.toFixed(6) * 1;
 		},
 		async submitForm() {
 			let formData = new FormData();
