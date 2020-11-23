@@ -49,6 +49,7 @@ export default {
 			router.push({
 				name: "ArtworkDetail",
 				params: {
+					artworkID: this.id,
 					id: this.id,
 					title: this.title,
 					artist: this.artist,
