@@ -22,10 +22,12 @@ Front:
   - Show some loading screen & transition when done
 - API try/catches
   - Add error component
+- Add timeline to artworks
 
 Back:
 
 - getAllArtitst route no pop option
+- addArtist in addArtwork handler
 - Add Vagrant
 
 ---
