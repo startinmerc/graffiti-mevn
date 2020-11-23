@@ -31,6 +31,10 @@ export function getArtwork(query) {
 	return apiCall("get", `/artworks/${query}`);
 }
 
+export function postArtist(data) {
+	return apiCall("post", "/artists", data);
+}
+
 export function postArtwork(data) {
 	return apiCall("post", "/artworks", data);
 }
