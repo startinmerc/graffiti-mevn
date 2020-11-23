@@ -16,7 +16,19 @@
 						:value="artist._id"
 						>{{ artist.name }}</option
 					>
+					<option :value="null">Other...</option>
 				</select>
+			</div>
+			<div v-if="selectedArtist === null">
+				<label for="newArtist"
+					>New Artist:
+					<input
+						type="text"
+						name="newArtist"
+						id="newArtist"
+						v-model="newArtist"
+					/>
+				</label>
 			</div>
 			<div class="form-group">
 				<label for="description">Description</label>
@@ -93,6 +105,7 @@ export default {
 			failure: false,
 			newArtworkID: null,
 			exif: null,
+			newArtist: null,
 		};
 	},
 	async mounted() {
@@ -128,7 +141,10 @@ export default {
 			let formData = new FormData();
 			formData.append("title", this.title);
 			formData.append("description", this.description);
-			formData.append("artist", this.selectedArtist);
+			formData.append(
+				"artist",
+				this.selectedArtist ? this.selectedArtist : this.newArtist
+			);
 			formData.append("photo", this.photo);
 			formData.append("coord_long", this.coord_long);
 			formData.append("coord_lat", this.coord_lat);
