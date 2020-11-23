@@ -30,7 +30,8 @@
 				<label for="photo">Upload photo</label>
 				<input type="file" @change="selectPhoto" ref="photo" accept="image/*" />
 			</div>
-			<div class="form-group">
+			<p v-if="exif === 'missing'">Geodata missing from image</p>
+			<div v-if="exif === 'missing'" class="form-group">
 				<label for="coord_long">
 					Longitude
 				</label>
@@ -44,7 +45,7 @@
 					step="0.000001"
 				/>
 			</div>
-			<div class="form-group">
+			<div v-if="exif === 'missing'" class="form-group">
 				<label for="coord_lat">
 					Latitude
 				</label>
