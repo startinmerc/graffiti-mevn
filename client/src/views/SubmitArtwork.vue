@@ -1,5 +1,5 @@
 <template>
-	<main>
+	<main id="submit-artwork" class="main--shrink-wide">
 		<h1>Submit an artwork</h1>
 		<form @submit.prevent="submitForm" enctype="multipart/form-data">
 			<div class="form-group">
@@ -174,4 +174,21 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss">
+#submit-artwork {
+	text-align: center;
+	form {
+		font-size: 1.1rem;
+	}
+	.form-group {
+		padding: var(--padding);
+		label {
+			display: block;
+		}
+	}
+	input,
+	select {
+		font-size: inherit;
+	}
+}
+</style>
