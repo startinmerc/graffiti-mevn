@@ -73,6 +73,7 @@
 </template>
 
 <script>
+import EXIF from "exif-js";
 import { getAllArtists, postArtwork } from "../utils/api";
 
 export default {
@@ -90,6 +91,7 @@ export default {
 			submitted: false,
 			failure: false,
 			newArtworkID: null,
+			exif: null,
 		};
 	},
 	async mounted() {
