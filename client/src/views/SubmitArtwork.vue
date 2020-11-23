@@ -87,7 +87,7 @@
 
 <script>
 import EXIF from "exif-js";
-import { getAllArtists, postArtwork } from "../utils/api";
+import { getAllArtists, postArtist, postArtwork } from "../utils/api";
 
 export default {
 	name: "SubmitArtwork",
@@ -141,13 +141,15 @@ export default {
 			let formData = new FormData();
 			formData.append("title", this.title);
 			formData.append("description", this.description);
-			formData.append(
-				"artist",
-				this.selectedArtist ? this.selectedArtist : this.newArtist
-			);
 			formData.append("photo", this.photo);
 			formData.append("coord_long", this.coord_long);
 			formData.append("coord_lat", this.coord_lat);
+			if (this.newArtist) {
+				let i = await postArtist({name: this.newArtist});
+				formData.append("artist", i._id);
+			} else {
+				formData.append("artist", this.selectedArtist);
+			}
 			try {
 				this.sending = true;
 				let res = await postArtwork(formData);
