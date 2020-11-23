@@ -37,16 +37,12 @@ export default {
 		title: String,
 		artist: String,
 		id: String,
-		photos: String,
+		photos: Array,
 		description: String,
 	},
 	components: {
 		IconBase,
 		ArrowRight,
-	},
-	mounted() {
-		// Convert photos string to array on load
-		this.photos = JSON.parse(this.photos);
 	},
 	methods: {
 		viewDetail() {

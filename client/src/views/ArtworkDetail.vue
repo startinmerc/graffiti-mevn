@@ -55,7 +55,7 @@ export default {
 			this.title = this.$route.params.title;
 			this.description = this.$route.params.description;
 			this.artist = this.$route.params.artist;
-			this.photos = JSON.parse(this.$route.params.photos);
+			this.photos = this.$route.params.photos;
 		}
 	},
 	methods: {

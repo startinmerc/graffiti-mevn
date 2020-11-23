@@ -132,7 +132,8 @@ export function addArtworkPopupAndZoom(map, event) {
 			title: title,
 			artist: artist,
 			id: id,
-			photos: photos,
+			// Check if passed photo prop is array, convert if not
+			photos: Array.isArray(photos) ? photos : JSON.parse(photos),
 			description: description,
 		},
 	});
@@ -217,9 +218,7 @@ export function handleArtworkParam(map, paramID) {
 	let data = map
 		.getSource("artworks")
 		._data.features.find((v) => v.properties.id === paramID);
-	// !-Convert photos array back to JSON string for ArtworkPopup
-	// !-To change
-	data.properties.photos = JSON.stringify(data.properties.photos);
+	// Add popup
 	addArtworkPopupAndZoom(map, { features: [data] });
 }
 
