@@ -55,9 +55,11 @@ export function createMap({ bounds, center, params }) {
 		// When map is fully loaded
 		map.on("load", () => {
 			// Find if paramater has been passed
-			if (params.id) {
+			if (params.artworkID) {
 				// If it has, execute handler
-				handleArtworkParam(map, params.id);
+				handleArtworkParam(map, params.artworkID);
+			} else if (params.artistID) {
+				handleArtistParam(map, params.artistID);
 			}
 		});
 	});
@@ -219,4 +221,10 @@ export function handleArtworkParam(map, paramID) {
 	// !-To change
 	data.properties.photos = JSON.stringify(data.properties.photos);
 	addArtworkPopupAndZoom(map, { features: [data] });
+}
+
+export function handleArtistParam(map, paramID) {
+	// !-Artist ID atm has to be name
+	map.setFilter("artworks", ["==", ["get", "artist"], paramID]);
+	// !-Also map cluster layers need to refresh somehow
 }

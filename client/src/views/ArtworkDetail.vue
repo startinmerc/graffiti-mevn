@@ -2,16 +2,20 @@
 	<main id="artwork-detail" class="main--shrink-wide">
 		<div
 			class="placeholder"
-			:style="photos && { backgroundImage: `url(${photos[0]}` }"
+			:style="photos && { backgroundImage: `url(${photos[0].url}` }"
 		>
 			<!-- Show photo if found -->
-			<img v-if="photos" :src="photos[0]" alt="artwork" />
+			<img v-if="photos" :src="photos[0].url" alt="artwork" />
 		</div>
 		<div class="padded">
 			<h1>{{ title }}</h1>
-			<router-link v-if="artist" :to="`/artist/${artist}`"><b>{{ artist }}</b></router-link>
+			<router-link
+				v-if="artist"
+				:to="{ name: 'ArtistDetail', params: { artistID: artist._id } }"
+				><b>{{ artist.name }}</b></router-link
+			>
 			<p v-if="description">{{ description }}</p>
-			<router-link to="/map" class="button">
+			<router-link :to="{ name: 'FullMap' }" class="button">
 				<icon-base icon-name="arrow-right" height="15" width="15">
 					<ArrowRight />
 				</icon-base>
@@ -54,11 +58,11 @@ export default {
 	},
 	methods: {
 		async findArtwork() {
-			let artwork = await getArtwork(this.$route.params.id);
+			let artwork = await getArtwork(this.$route.params.artworkID);
 			if (artwork) {
 				this.title = artwork.title;
 				this.description = artwork.description;
-				this.artist = artwork.artist.name;
+				this.artist = artwork.artist;
 				this.photos = artwork.photos;
 			} else {
 				this.title = "Artwork not found";

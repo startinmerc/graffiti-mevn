@@ -8,9 +8,10 @@
 				:key="artist._id"
 				:style="{ backgroundImage: `url(${getRandomPhoto(artist.artworks)}` }"
 			>
-				<router-link :to="`/artist/${artist._id}`">{{
-					artist.name
-				}}</router-link>
+				<router-link
+					:to="{ name: 'ArtistDetail', params: { artistID: artist._id } }"
+					>{{ artist.name }}</router-link
+				>
 			</li>
 		</ul>
 	</main>
@@ -35,9 +36,8 @@ export default {
 			let artwork =
 				artworks[this.getRandomIntInclusive(0, artworks.length - 1)];
 			let url =
-				artwork.photos[
-					this.getRandomIntInclusive(0, artwork.photos.length - 1)
-				];
+				artwork.photos[this.getRandomIntInclusive(0, artwork.photos.length - 1)]
+					.url;
 			return url;
 		},
 		// MATHS
