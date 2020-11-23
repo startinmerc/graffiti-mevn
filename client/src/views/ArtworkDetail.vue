@@ -11,7 +11,7 @@
 			<h1>{{ title }}</h1>
 			<p>
 				<router-link
-					v-if="artist"
+					v-if="artist._id.length > 0"
 					:to="{ name: 'ArtistDetail', params: { artistID: artist._id } }"
 					><b>{{ artist.name }}</b></router-link
 				>
@@ -37,7 +37,7 @@ export default {
 	data: function() {
 		return {
 			title: "",
-			artist: "",
+			artist: {_id: "", name: ""},
 			description: "",
 			photos: [],
 		};

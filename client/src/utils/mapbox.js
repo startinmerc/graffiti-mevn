@@ -130,7 +130,8 @@ export function addArtworkPopupAndZoom(map, event) {
 	const popupInstance = new ArtworkPopupClass({
 		propsData: {
 			title: title,
-			artist: artist,
+			// Check if passed artist is object, convert if not
+			artist: (typeof artist === "object" && artist !== null) ? artist : JSON.parse(artist),
 			id: id,
 			// Check if passed photo prop is array, convert if not
 			photos: Array.isArray(photos) ? photos : JSON.parse(photos),
@@ -223,7 +224,8 @@ export function handleArtworkParam(map, paramID) {
 }
 
 export function handleArtistParam(map, paramID) {
-	// !-Artist ID atm has to be name
+	// !-JSON now loads full artist object
+	// !-Needs to be handled here somehow, won't work atm
 	map.setFilter("artworks", ["==", ["get", "artist"], paramID]);
 	// !-Also map cluster layers need to refresh somehow
 }

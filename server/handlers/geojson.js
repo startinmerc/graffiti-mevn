@@ -23,7 +23,7 @@ function buildJSON(data) {
 			// Default arwork marker added though Mapbox Studio
 			icon: "ArtworkMarker",
 			id: v._id,
-			artist: v.artist.name,
+			artist: v.artist,
 			photos: v.photos,
 		},
 	}));

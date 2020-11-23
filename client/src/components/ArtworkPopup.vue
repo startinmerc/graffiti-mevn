@@ -14,7 +14,7 @@
 			></div>
 		</div>
 		<h3>{{ title }}</h3>
-		<p>{{ artist }}</p>
+		<p>{{ artist.name }}</p>
 		<!-- Can't be router-link as mounted after render -->
 		<!-- (Thanks, mapbox :face_with_rolling_eyes:) -->
 		<button @click="viewDetail">
@@ -35,7 +35,7 @@ export default {
 	name: "ArtworkPopup",
 	props: {
 		title: String,
-		artist: String,
+		artist: Object,
 		id: String,
 		photos: Array,
 		description: String,
