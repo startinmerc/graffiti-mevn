@@ -11,38 +11,53 @@ const isLocalhost = Boolean(
 		)
 );
 
-let url = isLocalhost ? "http://localhost:8081":"https://graffiti-explorer-backend.herokuapp.com";
+let url = isLocalhost
+	? "http://localhost:8081/api"
+	: "https://graffiti-explorer-backend.herokuapp.com/api";
 
 export function getGeoJSON() {
-	return new Promise((resolve) => {
-		axios.get(`${url}/api/geojson/`).then((response) => {
-			resolve(response.data);
-		});
-	});
+	return apiCall("get","/geojson");
 }
 
 export function getAllArtists() {
-	return new Promise((resolve) => {
-		axios.get(`${url}/api/artists/`).then((response) => {
-			resolve(response.data);
-		});
-	});
+	return apiCall("get", "/artists");
 }
 
 export function getArtist(id) {
-	return new Promise((resolve) => {
-		axios.get(`${url}/api/artists/${id}`).then((response) => {
-			resolve(response.data);
-		});
-	});
+	return apiCall("get", `/artists/${id}`);
 }
 
 export function getArtwork(query) {
-	return new Promise((resolve) => {
-		axios
-			.get(`${url}/api/artworks/${query}`)
-			.then((response) => {
-				resolve(response.data);
-			});
+	return apiCall("get", `/artworks/${query}`);
+}
+
+export function postArtwork(data) {
+	return apiCall("post", "/artworks", data);
+}
+
+export function apiCall(method, path, data) {
+	// Return promise with api call
+	return new Promise((resolve, reject) => {
+		// Expeced method, path, data is optional
+		// Url from top fn
+		return (
+			axios[method](url + path, data)
+				.then((res) => {
+					// Return data if successful
+					return resolve(res.data);
+				})
+				// Catch any errors
+				.catch((err) => {
+					return reject({
+						// Status is alwaus here
+						status: err.response.status,
+						// Message location differs if server is offline
+						message:
+							typeof err.response.data.error === "undefined"
+								? err.response.statusText
+								: err.response.data.error.message,
+					});
+				})
+		);
 	});
 }

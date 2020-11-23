@@ -6,6 +6,7 @@ import FullMap from "../views/FullMap.vue";
 import ArtworkDetail from "../views/ArtworkDetail.vue";
 import ArtistDetail from "../views/ArtistDetail.vue";
 import ArtistList from "../views/ArtistList.vue";
+import SubmitArtwork from "../views/SubmitArtwork.vue";
 
 Vue.use(VueRouter);
 
@@ -26,17 +27,27 @@ const routes = [
 		component: FullMap,
 	},
 	{
-		path: "/map/:id",
+		path: "/map/:artworkID",
+		name: "ArtworkOnMap",
 		component: FullMap,
-		props: true,
 	},
 	{
-		path: "/artwork/:id",
+		path: "/map/:artistID",
+		name: "ArtistOnMap",
+		component: FullMap,
+	},
+	{
+		path: "/artwork/new",
+		name: "SubmitArtwork",
+		component: SubmitArtwork,
+	},
+	{
+		path: "/artwork/:artworkID",
 		name: "ArtworkDetail",
 		component: ArtworkDetail,
 	},
 	{
-		path: "/artist/:id",
+		path: "/artist/:artistID",
 		name: "ArtistDetail",
 		component: ArtistDetail,
 	},

@@ -10,11 +10,23 @@
 
 To do
 
+Front:
+
 - Add filter by artist to map
+  - Add filter param to geoJSON route OR
+  - Figure how to refresh layers and filter source
+- Change popup to img/title link and artist link?
 - `../map/:artworkID` or `../artwork/:artworkID/map`?
-- Latter would work better for `../artist/:artistID/map`
+  - Latter would work better for `../artist/:artistID/map`
 - Add loading data state to FullMap + Api calls
   - Show some loading screen & transition when done
+- API try/catches
+  - Add error component
+
+Back:
+
+- getAllArtitst route no pop option
+- Add Vagrant
 
 ---
 
