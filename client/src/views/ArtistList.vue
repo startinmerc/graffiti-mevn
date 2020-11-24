@@ -14,20 +14,37 @@
 				>
 			</li>
 		</ul>
+		<ErrorMessage
+			v-if="error"
+			@close="error = false"
+			:status="errorMessage.status"
+			:message="errorMessage.message"
+		/>
 	</main>
 </template>
 
 <script>
 import { getAllArtists } from "../utils/api";
+import ErrorMessage from "../components/ErrorMessage";
 
 export default {
 	name: "ArtistList",
+	components: {
+		ErrorMessage,
+	},
 	async mounted() {
-		this.artists = await getAllArtists();
+		try {
+			this.artists = await getAllArtists();
+		} catch (err) {
+			this.error = true;
+			this.errorMessage = err;
+		}
 	},
 	data: function() {
 		return {
 			artists: {},
+			error: false,
+			errorMessage: {},
 		};
 	},
 	methods: {
@@ -36,7 +53,7 @@ export default {
 			let artwork =
 				artworks[this.getRandomIntInclusive(0, artworks.length - 1)];
 			if (artwork.photos.length < 1) {
-				return 'var(--placeholder-gradient)';
+				return "var(--placeholder-gradient)";
 			}
 			let url =
 				artwork.photos[this.getRandomIntInclusive(0, artwork.photos.length - 1)]
