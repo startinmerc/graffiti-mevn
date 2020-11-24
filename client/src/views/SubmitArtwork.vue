@@ -4,11 +4,11 @@
 		<form @submit.prevent="submitForm" enctype="multipart/form-data">
 			<div class="form-group">
 				<label for="title">Title</label>
-				<input type="text" v-model="title" placeholder="Artwork Title" />
+				<input type="text" v-model="title" placeholder="Artwork Title" required/>
 			</div>
 			<div class="form-group">
 				<label for="artist">Artist</label>
-				<select v-model="selectedArtist">
+				<select v-model="selectedArtist" required>
 					<option disabled value="">Please select one</option>
 					<option
 						v-for="artist in artists"
@@ -55,6 +55,7 @@
 					min="-1.167997"
 					max="-1.005763"
 					step="0.000001"
+					required
 				/>
 			</div>
 			<div v-if="exif === 'missing'" class="form-group">
@@ -69,6 +70,7 @@
 					min="53.912440"
 					max="54.004229"
 					step="0.000001"
+					required
 				/>
 			</div>
 			<button type="submit">Submit Artwork</button>
