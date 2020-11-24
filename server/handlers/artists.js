@@ -16,13 +16,20 @@ exports.createArtist = async function (req, res, next) {
 
 exports.getArtist = async function (req, res, next) {
 	try {
-		let artist = await db.Artist.findById(req.params.query).populate("artworks");
+		// First, try to find artist by ID & return if found
+		let artist = await db.Artist.findById(req.params.query).populate(
+			"artworks"
+		);
 		return res.status(200).json(artist);
 	} catch (err) {
 		try {
+			// If err, try to find artist by name
 			let artist = await db.Artist.findOne({
 				name: req.params.query.replace(/_/g, " "),
 			}).populate("artworks");
+			if (artist === null) {
+				return next({status: 404, message: "Artist not found"});
+			}
 			return res.status(200).json(artist);
 		} catch (err) {
 			return next(err);
