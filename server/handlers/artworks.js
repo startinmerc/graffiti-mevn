@@ -46,6 +46,10 @@ exports.getArtwork = async (req, res, next) => {
 				// Regex to replace underscores with spaces
 				title: req.params.query.replace(/_/g, " "),
 			}).populate("artist", { name: true });
+			// Throw error if no artwork found
+			if (artwork === null) {
+				return next({ status: 404, message: `Artwork "${req.params.query}" not found` });
+			}
 			// Return found artwork
 			return res.status(200).json(artwork);
 		} catch (err) {
