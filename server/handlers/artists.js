@@ -27,7 +27,7 @@ exports.getArtist = async function (req, res, next) {
 			}).populate("artworks");
 			// Throw error if no artist found
 			if (artist === null) {
-				return next({status: 404, message: `Artist "${re.params.query}" not found`});
+				return next({status: 404, message: `Artist "${req.params.query}" not found`});
 			}
 			return res.status(200).json(artist);
 		} catch (err) {
