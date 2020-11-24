@@ -7,6 +7,7 @@ import ArtworkDetail from "../views/ArtworkDetail.vue";
 import ArtistDetail from "../views/ArtistDetail.vue";
 import ArtistList from "../views/ArtistList.vue";
 import SubmitArtwork from "../views/SubmitArtwork.vue";
+import PageNotFound from '../views/PageNotFound.vue';
 
 Vue.use(VueRouter);
 
@@ -56,6 +57,10 @@ const routes = [
 		name: "ArtistList",
 		component: ArtistList,
 	},
+	{
+		path: "*",
+		component: PageNotFound,
+	}
 ];
 
 const router = new VueRouter({
