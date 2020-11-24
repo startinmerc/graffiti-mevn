@@ -24,6 +24,12 @@
 				Back to map
 			</router-link>
 		</div>
+		<ErrorMessage
+			v-if="error"
+			@close="error = false"
+			:status="errorMessage.status"
+			:message="errorMessage.message"
+		/>
 	</main>
 </template>
 
@@ -31,20 +37,24 @@
 import IconBase from "../components/icons/IconBase";
 import ArrowRight from "../components/icons/ArrowRight";
 import { getArtwork } from "../utils/api";
+import ErrorMessage from "../components/ErrorMessage";
 
 export default {
 	name: "ArtworkDetail",
 	data: function() {
 		return {
 			title: "",
-			artist: {_id: "", name: ""},
+			artist: { _id: "", name: "" },
 			description: "",
 			photos: [],
+			error: false,
+			errorMessage: {},
 		};
 	},
 	components: {
 		IconBase,
 		ArrowRight,
+		ErrorMessage,
 	},
 	mounted() {
 		// If title (therefore others) not present...
@@ -60,14 +70,16 @@ export default {
 	},
 	methods: {
 		async findArtwork() {
-			let artwork = await getArtwork(this.$route.params.artworkID);
-			if (artwork) {
+			try {
+				let artwork = await getArtwork(this.$route.params.artworkID);
 				this.title = artwork.title;
 				this.description = artwork.description;
 				this.artist = artwork.artist;
 				this.photos = artwork.photos;
-			} else {
-				this.title = "Artwork not found";
+			} catch (err) {
+				this.errorMessage = err;
+				this.title = err.message;
+				this.error = true;
 			}
 		},
 	},
