@@ -139,7 +139,7 @@ main {
 }
 
 @media screen and (min-width: 768px) {
-	.main--shrink-wide {
+	.main--shrink-wide, main.padded {
 		width: 80%;
 		margin: 0 10%;
 	}
