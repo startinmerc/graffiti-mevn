@@ -22,12 +22,12 @@
 				</p>
 			</li>
 		</ul>
-		<!-- !-Param will change eventually -->
-		<router-link
+		<!-- !-To implement -->
+		<!-- <router-link
 			v-if="name"
 			:to="{ name: 'ArtistOnMap', params: { artistID: name } }"
 			>View artworks on map</router-link
-		>
+		> -->
 	</main>
 </template>
 
