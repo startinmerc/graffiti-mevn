@@ -154,8 +154,19 @@ export default {
 			formData.append("coord_long", this.coord_long);
 			formData.append("coord_lat", this.coord_lat);
 			if (this.newArtist) {
-				let i = await postArtist({ name: this.newArtist });
-				formData.append("artist", i._id);
+				try {
+					// Try creating new artist
+					let i = await postArtist({ name: this.newArtist });
+					// Add new artist's id to form
+					formData.append("artist", i._id);
+				} catch (err) {
+					// Catch server errors
+					this.sending = false;
+					this.errorMessage = err;
+					this.error = true;
+					// Abandon post form
+					return;
+				}
 			} else {
 				formData.append("artist", this.selectedArtist);
 			}
