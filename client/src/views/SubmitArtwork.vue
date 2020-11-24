@@ -82,7 +82,12 @@
 			>
 		</div>
 		<p v-if="error">Upload failed :(</p>
-		<ErrorMessage v-if="error" @close="toggleError()" :status="errorMessage.status" :message="errorMessage.message"/>
+		<ErrorMessage
+			v-if="error"
+			@close="error = false"
+			:status="errorMessage.status"
+			:message="errorMessage.message"
+		/>
 	</main>
 </template>
 
@@ -161,7 +166,7 @@ export default {
 			} catch (err) {
 				this.sending = false;
 				this.errorMessage = err;
-				this.toggleError();
+				this.error = true;
 			}
 		},
 		handleSuccess(res) {
@@ -178,9 +183,6 @@ export default {
 			this.photo = null;
 			this.coord_long = -1.080278;
 			this.coord_lat = 53.958332;
-		},
-		toggleError() {
-			this.error = !this.error;
 		},
 	},
 };
