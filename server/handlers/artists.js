@@ -5,9 +5,7 @@ exports.createArtist = async function (req, res, next) {
 		let artist = await db.Artist.create({
 			name: req.body.name,
 		});
-
 		let foundArtist = await db.Artist.findById(artist._id);
-
 		return res.status(201).json(foundArtist);
 	} catch (err) {
 		return next(err);
@@ -27,8 +25,9 @@ exports.getArtist = async function (req, res, next) {
 			let artist = await db.Artist.findOne({
 				name: req.params.query.replace(/_/g, " "),
 			}).populate("artworks");
+			// Throw error if no artist found
 			if (artist === null) {
-				return next({status: 404, message: "Artist not found"});
+				return next({status: 404, message: `Artist "${re.params.query}" not found`});
 			}
 			return res.status(200).json(artist);
 		} catch (err) {
