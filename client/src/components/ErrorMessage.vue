@@ -1,6 +1,6 @@
 <template>
 	<div class="error">
-		<p :style="{ marginTop: 0 }">Error {{ code }}:</p>
+		<p :style="{ marginTop: 0 }">Error {{ status }}:</p>
 		<p :style="{ marginBottom: 0 }">{{ message }}</p>
 		<button @click.prevent="$emit('close')">Close</button>
 	</div>
@@ -10,16 +10,8 @@
 export default {
 	name: "ErrorMessage",
 	props: {
-		code: String,
+		status: Number,
 		message: String,
-		value: {
-			required: true,
-		},
-	},
-	methods: {
-		close() {
-			this.$emit("error", !this.value);
-		},
 	},
 };
 </script>
