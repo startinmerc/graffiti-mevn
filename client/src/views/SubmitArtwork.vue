@@ -81,16 +81,19 @@
 				>View on map</router-link
 			>
 		</div>
-		<p v-if="failure">Upload failed :(</p>
+		<p v-if="error">Upload failed :(</p>
+		<ErrorMessage v-if="error" @close="toggleError()" :status="errorMessage.status" :message="errorMessage.message"/>
 	</main>
 </template>
 
 <script>
 import EXIF from "exif-js";
 import { getAllArtists, postArtist, postArtwork } from "../utils/api";
+import ErrorMessage from "../components/ErrorMessage";
 
 export default {
 	name: "SubmitArtwork",
+	components: { ErrorMessage },
 	data: function() {
 		return {
 			artists: [],
@@ -102,10 +105,11 @@ export default {
 			coord_lat: 53.958332,
 			sending: false,
 			submitted: false,
-			failure: false,
 			newArtworkID: null,
 			exif: null,
 			newArtist: null,
+			error: false,
+			errorMessage: {},
 		};
 	},
 	async mounted() {
@@ -145,7 +149,7 @@ export default {
 			formData.append("coord_long", this.coord_long);
 			formData.append("coord_lat", this.coord_lat);
 			if (this.newArtist) {
-				let i = await postArtist({name: this.newArtist});
+				let i = await postArtist({ name: this.newArtist });
 				formData.append("artist", i._id);
 			} else {
 				formData.append("artist", this.selectedArtist);
@@ -156,14 +160,17 @@ export default {
 				this.handleSuccess(res);
 			} catch (err) {
 				this.sending = false;
-				this.failure = true;
-				console.log(err);
+				this.errorMessage = err;
+				this.toggleError();
 			}
 		},
 		handleSuccess(res) {
 			this.newArtworkID = res._id;
 			this.sending = false;
 			this.submitted = true;
+			this.resetForm();
+		},
+		resetForm() {
 			this.artists = [];
 			this.title = "";
 			this.selectedArtist = "";
@@ -171,6 +178,9 @@ export default {
 			this.photo = null;
 			this.coord_long = -1.080278;
 			this.coord_lat = 53.958332;
+		},
+		toggleError() {
+			this.error = !this.error;
 		},
 	},
 };
