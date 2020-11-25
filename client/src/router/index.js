@@ -32,25 +32,28 @@ const routes = [
 		name: "ArtworkOnMap",
 		component: FullMap,
 	},
-	{
-		path: "/map/:artistID",
-		name: "ArtistOnMap",
-		component: FullMap,
-	},
+	// {
+	// 	path: "/map/:artistID",
+	// 	name: "ArtistOnMap",
+	// 	component: FullMap,
+	// },
 	{
 		path: "/artwork/new",
 		name: "SubmitArtwork",
 		component: SubmitArtwork,
+		alias: "/artworks/new",
 	},
 	{
 		path: "/artwork/:artworkID",
 		name: "ArtworkDetail",
 		component: ArtworkDetail,
+		alias: "/artworks/:artworkID",
 	},
 	{
 		path: "/artist/:artistID",
 		name: "ArtistDetail",
 		component: ArtistDetail,
+		alias: "/artists/:artistID",
 	},
 	{
 		path: "/artists",
