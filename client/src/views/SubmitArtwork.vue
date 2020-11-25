@@ -7,7 +7,7 @@
 			v-if="!submitted"
 		>
 			<div class="form-group">
-				<label for="title">Title</label>
+				<label for="title">Title <span>(required)</span></label>
 				<input
 					type="text"
 					v-model="title"
@@ -16,7 +16,7 @@
 				/>
 			</div>
 			<div class="form-group">
-				<label for="artist">Artist</label>
+				<label for="artist">Artist <span>(required)</span></label>
 				<select v-model="selectedArtist" required>
 					<option disabled value="">Please select one</option>
 					<option
@@ -28,9 +28,9 @@
 					<option :value="null">Other...</option>
 				</select>
 			</div>
-			<div v-if="selectedArtist === null">
+			<div class="form-group" v-if="selectedArtist === null">
 				<label for="newArtist"
-					>New Artist:
+					>New Artist: <span>(required)</span>
 					<input
 						type="text"
 						name="newArtist"
@@ -40,7 +40,7 @@
 				</label>
 			</div>
 			<div class="form-group">
-				<label for="description">Description</label>
+				<label for="description">Description (optional)</label>
 				<input
 					type="text"
 					v-model="description"
@@ -48,16 +48,18 @@
 				/>
 			</div>
 			<div class="form-group">
-				<label for="photo">Upload photo</label>
+				<label for="photo">Upload photo (optional)</label>
 				<input type="file" @change="selectPhoto" ref="photo" accept="image/*" />
 			</div>
 
-			<div class="location" v-if="exif === 'missing'">
-				<p :style="{color: 'var(--red)'}">Geodata missing from image</p>
+			<div class="location" v-if="exif === 'missing' || exif === null">
+				<p class="label">Location <span>(required)</span></p>
+				<p v-if="exif === 'missing'" :style="{ color: 'var(--red)' }">
+					Geodata missing from image
+				</p>
 				<div class="form-group">
-					<label for="geolocate">Use my location</label
-					><button id="geolocate" @click.prevent="geolocate()">
-						Locate me
+					<button id="geolocate" @click.prevent="geolocate()">
+						Use my location
 					</button>
 					<p v-if="gettingLocation">Getting location...</p>
 				</div>
@@ -263,15 +265,18 @@ export default {
 	}
 	.form-group {
 		padding: var(--padding);
-		label {
-			display: block;
-		}
+	}
+	label,
+	.label {
+		display: block;
+		font-weight: bolder;
+		color: var(--red);
 	}
 	input,
 	select {
 		font-size: inherit;
 	}
-	button[type="submit"]{
+	button[type="submit"] {
 		padding: var(--padding);
 		font-size: 1.3rem;
 	}
