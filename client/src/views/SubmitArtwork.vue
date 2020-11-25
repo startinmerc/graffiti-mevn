@@ -1,10 +1,19 @@
 <template>
 	<main id="submit-artwork" class="main--shrink-wide">
 		<h1>Submit an artwork</h1>
-		<form @submit.prevent="submitForm" enctype="multipart/form-data">
+		<form
+			@submit.prevent="submitForm"
+			enctype="multipart/form-data"
+			v-if="!submitted"
+		>
 			<div class="form-group">
 				<label for="title">Title</label>
-				<input type="text" v-model="title" placeholder="Artwork Title" required/>
+				<input
+					type="text"
+					v-model="title"
+					placeholder="Artwork Title"
+					required
+				/>
 			</div>
 			<div class="form-group">
 				<label for="artist">Artist</label>
@@ -42,38 +51,47 @@
 				<label for="photo">Upload photo</label>
 				<input type="file" @change="selectPhoto" ref="photo" accept="image/*" />
 			</div>
-			<p v-if="exif === 'missing'">Geodata missing from image</p>
-			<div class="form-group">
-				<label for="coord_long">
-					Longitude
-				</label>
-				<input
-					type="number"
-					name="coord_long"
-					v-model="coord_long"
-					placeholder="Number"
-					min="-1.167997"
-					max="-1.005763"
-					step="0.000001"
-					:disabled="exif !== null && exif !== 'missing'"
-					required
-				/>
-			</div>
-			<div class="form-group">
-				<label for="coord_lat">
-					Latitude
-				</label>
-				<input
-					type="number"
-					name="coord_lat"
-					v-model="coord_lat"
-					placeholder="Number"
-					min="53.912440"
-					max="54.004229"
-					step="0.000001"
-					:disabled="exif !== null && exif !== 'missing'"
-					required
-				/>
+
+			<div class="location" v-if="exif === 'missing'">
+				<p :style="{color: 'var(--red)'}">Geodata missing from image</p>
+				<div class="form-group">
+					<label for="geolocate">Use my location</label
+					><button id="geolocate" @click.prevent="geolocate()">
+						Locate me
+					</button>
+					<p v-if="gettingLocation">Getting location...</p>
+				</div>
+				<p>Or enter manually:</p>
+				<div class="form-group">
+					<label for="coord_long">
+						Longitude
+					</label>
+					<input
+						type="number"
+						name="coord_long"
+						v-model="coord_long"
+						placeholder="Number"
+						min="-1.167997"
+						max="-1.005763"
+						step="0.000001"
+						required
+					/>
+				</div>
+				<div class="form-group">
+					<label for="coord_lat">
+						Latitude
+					</label>
+					<input
+						type="number"
+						name="coord_lat"
+						v-model="coord_lat"
+						placeholder="Number"
+						min="53.912440"
+						max="54.004229"
+						step="0.000001"
+						required
+					/>
+				</div>
 			</div>
 			<button type="submit">Submit Artwork</button>
 		</form>
@@ -119,6 +137,7 @@ export default {
 			newArtist: null,
 			error: false,
 			errorMessage: {},
+			gettingLocation: false,
 		};
 	},
 	async mounted() {
@@ -199,6 +218,39 @@ export default {
 			this.coord_long = -1.080278;
 			this.coord_lat = 53.958332;
 		},
+		async getlocation() {
+			return new Promise((resolve, reject) => {
+				if (!("geolocation" in navigator)) {
+					reject(new Error("Geolocation is not available"));
+				}
+				navigator.geolocation.getCurrentPosition(
+					(pos) => {
+						resolve(pos);
+					},
+					(err) => {
+						reject(err);
+					},
+					{
+						enableHighAccuracy: true,
+						maximumAge: 30000,
+						timeout: 27000,
+					}
+				);
+			});
+		},
+		async geolocate() {
+			this.gettingLocation = true;
+			try {
+				let location = await this.getlocation();
+				this.coord_long = location.coords.longitude.toFixed(6);
+				this.coord_lat = location.coords.latitude.toFixed(6);
+				this.gettingLocation = false;
+			} catch (err) {
+				this.gettingLocation = false;
+				this.error = true;
+				this.errorMessage = err;
+			}
+		},
 	},
 };
 </script>
@@ -218,6 +270,22 @@ export default {
 	input,
 	select {
 		font-size: inherit;
+	}
+	button[type="submit"]{
+		padding: var(--padding);
+		font-size: 1.3rem;
+	}
+	.location {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		p {
+			width: 100%;
+			margin: 0;
+		}
+		input {
+			width: 50%;
+		}
 	}
 }
 </style>
