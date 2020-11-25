@@ -4,11 +4,11 @@
 		<form @submit.prevent="submitForm" enctype="multipart/form-data">
 			<div class="form-group">
 				<label for="title">Title</label>
-				<input type="text" v-model="title" placeholder="Artwork Title" />
+				<input type="text" v-model="title" placeholder="Artwork Title" required/>
 			</div>
 			<div class="form-group">
 				<label for="artist">Artist</label>
-				<select v-model="selectedArtist">
+				<select v-model="selectedArtist" required>
 					<option disabled value="">Please select one</option>
 					<option
 						v-for="artist in artists"
@@ -43,7 +43,7 @@
 				<input type="file" @change="selectPhoto" ref="photo" accept="image/*" />
 			</div>
 			<p v-if="exif === 'missing'">Geodata missing from image</p>
-			<div v-if="exif === 'missing'" class="form-group">
+			<div class="form-group">
 				<label for="coord_long">
 					Longitude
 				</label>
@@ -55,9 +55,11 @@
 					min="-1.167997"
 					max="-1.005763"
 					step="0.000001"
+					:disabled="exif !== null && exif !== 'missing'"
+					required
 				/>
 			</div>
-			<div v-if="exif === 'missing'" class="form-group">
+			<div class="form-group">
 				<label for="coord_lat">
 					Latitude
 				</label>
@@ -69,6 +71,8 @@
 					min="53.912440"
 					max="54.004229"
 					step="0.000001"
+					:disabled="exif !== null && exif !== 'missing'"
+					required
 				/>
 			</div>
 			<button type="submit">Submit Artwork</button>
@@ -81,16 +85,24 @@
 				>View on map</router-link
 			>
 		</div>
-		<p v-if="failure">Upload failed :(</p>
+		<p v-if="error">Upload failed :(</p>
+		<ErrorMessage
+			v-if="error"
+			@close="error = false"
+			:status="errorMessage.status"
+			:message="errorMessage.message"
+		/>
 	</main>
 </template>
 
 <script>
 import EXIF from "exif-js";
 import { getAllArtists, postArtist, postArtwork } from "../utils/api";
+import ErrorMessage from "../components/ErrorMessage";
 
 export default {
 	name: "SubmitArtwork",
+	components: { ErrorMessage },
 	data: function() {
 		return {
 			artists: [],
@@ -102,10 +114,11 @@ export default {
 			coord_lat: 53.958332,
 			sending: false,
 			submitted: false,
-			failure: false,
 			newArtworkID: null,
 			exif: null,
 			newArtist: null,
+			error: false,
+			errorMessage: {},
 		};
 	},
 	async mounted() {
@@ -145,8 +158,19 @@ export default {
 			formData.append("coord_long", this.coord_long);
 			formData.append("coord_lat", this.coord_lat);
 			if (this.newArtist) {
-				let i = await postArtist({name: this.newArtist});
-				formData.append("artist", i._id);
+				try {
+					// Try creating new artist
+					let i = await postArtist({ name: this.newArtist });
+					// Add new artist's id to form
+					formData.append("artist", i._id);
+				} catch (err) {
+					// Catch server errors
+					this.sending = false;
+					this.errorMessage = err;
+					this.error = true;
+					// Abandon post form
+					return;
+				}
 			} else {
 				formData.append("artist", this.selectedArtist);
 			}
@@ -156,14 +180,17 @@ export default {
 				this.handleSuccess(res);
 			} catch (err) {
 				this.sending = false;
-				this.failure = true;
-				console.log(err);
+				this.errorMessage = err;
+				this.error = true;
 			}
 		},
 		handleSuccess(res) {
 			this.newArtworkID = res._id;
 			this.sending = false;
 			this.submitted = true;
+			this.resetForm();
+		},
+		resetForm() {
 			this.artists = [];
 			this.title = "";
 			this.selectedArtist = "";

@@ -131,7 +131,10 @@ export function addArtworkPopupAndZoom(map, event) {
 		propsData: {
 			title: title,
 			// Check if passed artist is object, convert if not
-			artist: (typeof artist === "object" && artist !== null) ? artist : JSON.parse(artist),
+			artist:
+				typeof artist === "object" && artist !== null
+					? artist
+					: JSON.parse(artist),
 			id: id,
 			// Check if passed photo prop is array, convert if not
 			photos: Array.isArray(photos) ? photos : JSON.parse(photos),
@@ -203,14 +206,20 @@ export function addArtworksLayer(map) {
 }
 
 export async function loadArtworks(map) {
-	let data = await getGeoJSON();
-	map.addSource("artworks", {
-		type: "geojson",
-		data: data.data,
-		cluster: true,
-		clusterMaxZoom: 17, // Max zoom to cluster points on
-		clusterRadius: 50, // Radius of each cluster when clustering points
-	});
+	try {
+		let data = await getGeoJSON();
+		map.addSource("artworks", {
+			type: "geojson",
+			data: data.data,
+			cluster: true,
+			clusterMaxZoom: 17, // Max zoom to cluster points on
+			clusterRadius: 50, // Radius of each cluster when clustering points
+		});
+	} catch (err) {
+		let e = new Error(err.message);
+		e.status = err.status;
+		throw e;
+	}
 }
 
 // Finds param in source, zooms & adds popup

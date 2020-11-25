@@ -28,18 +28,29 @@
 			:to="{ name: 'ArtistOnMap', params: { artistID: name } }"
 			>View artworks on map</router-link
 		> -->
+		<ErrorMessage
+			v-if="error"
+			@close="error = false"
+			:status="errorMessage.status"
+			:message="errorMessage.message"
+		/>
+		<router-link v-if="errorMessage.status" :to="{name: 'FullMap'}">Back to map</router-link>
 	</main>
 </template>
 
 <script>
+import ErrorMessage from "../components/ErrorMessage";
 import { getArtist } from "../utils/api";
 
 export default {
+	components: { ErrorMessage },
 	name: "ArtistDetail",
 	data: function() {
 		return {
 			name: "",
 			artworks: [],
+			error: false,
+			errorMessage: {},
 		};
 	},
 	mounted: function() {
@@ -47,16 +58,16 @@ export default {
 	},
 	methods: {
 		async findArtist() {
-			// API call to find artist from supplied id
-			let artist = await getArtist(this.$route.params.artistID);
-			// If result found
-			if (artist) {
+			try {
+				// API call to find artist from supplied id
+				let artist = await getArtist(this.$route.params.artistID);
 				// Set data
 				this.name = artist.name;
 				this.artworks = artist.artworks;
-			} else {
-				// Otherwise set not found
-				this.name = "Artist not found";
+			} catch (err) {
+				this.errorMessage = err;
+				this.name = err.message;
+				this.error = true;
 			}
 		},
 	},

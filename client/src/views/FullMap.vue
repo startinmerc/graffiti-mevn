@@ -1,6 +1,12 @@
 <template>
 	<main id="full-map">
 		<div id="map-container" ref="mapContainer"></div>
+		<ErrorMessage
+			v-if="error"
+			@close="error = false"
+			:status="errorMessage.status"
+			:message="errorMessage.message"
+		/>
 	</main>
 </template>
 
@@ -15,9 +21,19 @@ import {
 	createMap,
 	loadArtworks,
 } from "../utils/mapbox";
+import ErrorMessage from "../components/ErrorMessage";
 
 export default {
 	name: "FullMap",
+	components: {
+		ErrorMessage,
+	},
+	data() {
+		return {
+			error: false,
+			errorMessage: {},
+		};
+	},
 	async mounted() {
 		// Get API token from .env
 		mapboxgl.accessToken = process.env.VUE_APP_MAPBOX_TOKEN;
@@ -30,11 +46,11 @@ export default {
 		// Add interactions
 		this.addMouseInteraction(map);
 	},
-	watch: {
-		// !-Watch route for changes,
-		// !-Will refresh map or act on params eventually
-		$route: function(){console.log(this.$route.params)},
-	},
+	// watch: {
+	// 	// !-Watch route for changes,
+	// 	// !-Will refresh map or act on params eventually
+	// 	$route: function(){console.log(this.$route.params)},
+	// },
 	methods: {
 		loadMap() {
 			return createMap({
@@ -47,7 +63,12 @@ export default {
 			});
 		},
 		async addPoints(map) {
-			await loadArtworks(map);
+			try {
+				await loadArtworks(map);
+			} catch (err) {
+				this.error = true;
+				this.errorMessage = err;
+			}
 		},
 		addLayers(map) {
 			// Adds 2 layers: "clusters" + "cluster-count"

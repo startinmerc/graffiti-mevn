@@ -7,6 +7,7 @@ import ArtworkDetail from "../views/ArtworkDetail.vue";
 import ArtistDetail from "../views/ArtistDetail.vue";
 import ArtistList from "../views/ArtistList.vue";
 import SubmitArtwork from "../views/SubmitArtwork.vue";
+import PageNotFound from '../views/PageNotFound.vue';
 
 Vue.use(VueRouter);
 
@@ -31,31 +32,38 @@ const routes = [
 		name: "ArtworkOnMap",
 		component: FullMap,
 	},
-	{
-		path: "/map/:artistID",
-		name: "ArtistOnMap",
-		component: FullMap,
-	},
+	// {
+	// 	path: "/map/:artistID",
+	// 	name: "ArtistOnMap",
+	// 	component: FullMap,
+	// },
 	{
 		path: "/artwork/new",
 		name: "SubmitArtwork",
 		component: SubmitArtwork,
+		alias: "/artworks/new",
 	},
 	{
 		path: "/artwork/:artworkID",
 		name: "ArtworkDetail",
 		component: ArtworkDetail,
+		alias: "/artworks/:artworkID",
 	},
 	{
 		path: "/artist/:artistID",
 		name: "ArtistDetail",
 		component: ArtistDetail,
+		alias: "/artists/:artistID",
 	},
 	{
 		path: "/artists",
 		name: "ArtistList",
 		component: ArtistList,
 	},
+	{
+		path: "*",
+		component: PageNotFound,
+	}
 ];
 
 const router = new VueRouter({
