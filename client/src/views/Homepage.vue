@@ -32,7 +32,7 @@ main {
 	color: var(--red);
 	overflow: hidden;
 	background: no-repeat center center;
-	background-image: url("../assets/Homepage.jpg");
+	background-image: url("https://res.cloudinary.com/dyxgpn0wc/image/upload/v1606307472/GraffitiExplorer/Homepage_shyulx.jpg");
 	background-size: cover;
 	display: flex;
 	flex-direction: column;
