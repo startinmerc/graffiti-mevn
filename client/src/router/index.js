@@ -7,7 +7,7 @@ import ArtworkDetail from "../views/ArtworkDetail.vue";
 import ArtistDetail from "../views/ArtistDetail.vue";
 import ArtistList from "../views/ArtistList.vue";
 import SubmitArtwork from "../views/SubmitArtwork.vue";
-import PageNotFound from '../views/PageNotFound.vue';
+import PageNotFound from "../views/PageNotFound.vue";
 
 Vue.use(VueRouter);
 
@@ -16,21 +16,33 @@ const routes = [
 		path: "/",
 		name: "Homepage",
 		component: Homepage,
+		meta: {
+			title: "York Graffiti Explorer",
+		},
 	},
 	{
 		path: "/about",
 		name: "About",
 		component: About,
+		meta: {
+			title: "About - York Graffiti Explorer",
+		},
 	},
 	{
 		path: "/map",
 		name: "FullMap",
 		component: FullMap,
+		meta: {
+			title: "Map - York Graffiti Explorer",
+		},
 	},
 	{
 		path: "/map/:artworkID",
 		name: "ArtworkOnMap",
 		component: FullMap,
+		meta: {
+			title: "Map - York Graffiti Explorer",
+		},
 	},
 	// {
 	// 	path: "/map/:artistID",
@@ -42,6 +54,9 @@ const routes = [
 		name: "SubmitArtwork",
 		component: SubmitArtwork,
 		alias: "/artworks/new",
+		meta: {
+			title: "Submit New Artwork - York Graffiti Explorer",
+		},
 	},
 	{
 		path: "/artwork/:artworkID",
@@ -59,11 +74,17 @@ const routes = [
 		path: "/artists",
 		name: "ArtistList",
 		component: ArtistList,
+		meta: {
+			title: "View All Artists - York Graffiti Explorer",
+		},
 	},
 	{
 		path: "*",
 		component: PageNotFound,
-	}
+		meta: {
+			title: "Page Not Found - York Graffiti Explorer",
+		},
+	},
 ];
 
 const router = new VueRouter({

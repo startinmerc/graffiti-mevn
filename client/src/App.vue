@@ -20,30 +20,33 @@ export default {
 			transitionName: "",
 		};
 	},
+	methods: {
+		// Logic for working out page transition direction
+		direction(to, from) {
+			// Extract last page & destination page
+			let last = from.path.split("/")[from.path.split("/").length - 1];
+			let dest = to.path.split("/")[to.path.split("/").length - 1];
+
+			// If any of these match, swipe left
+			if (
+				dest === "" ||
+				last === "about" ||
+				(dest === "map" &&
+					from.path.split("/")[from.path.split("/").length - 2] === "artwork")
+			) {
+				return "left";
+			}
+			// Otherwise swipe right
+			return "right";
+		},
+	},
 	watch: {
 		// Watch for changes to route
 		$route(to, from) {
-			// Logic for working out page transition direction
-			function direction(to, from) {
-				// Extract last page & destination page
-				let last = from.path.split("/")[from.path.split("/").length - 1];
-				let dest = to.path.split("/")[to.path.split("/").length - 1];
-
-				// If any of these match, swipe left
-				if (
-					dest === "" ||
-					last === "about" ||
-					(dest === "map" &&
-						from.path.split("/")[from.path.split("/").length - 2] === "artwork")
-				) {
-					return "left";
-				}
-				// Otherwise swipe right
-				return "right";
-			}
-
 			// Apply class name to transition group
-			this.transitionName = `swipe-${direction(to, from)}`;
+			this.transitionName = `swipe-${this.direction(to, from)}`;
+			// Update page meta
+			document.title = to.meta.title || "York Graffiti Explorer";
 		},
 	},
 };
@@ -139,7 +142,8 @@ main {
 }
 
 @media screen and (min-width: 768px) {
-	.main--shrink-wide, main.padded {
+	.main--shrink-wide,
+	main.padded {
 		width: 80%;
 		margin: 0 10%;
 	}

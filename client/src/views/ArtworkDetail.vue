@@ -76,6 +76,7 @@ export default {
 				this.description = artwork.description;
 				this.artist = artwork.artist;
 				this.photos = artwork.photos;
+				document.title = `${this.title} - York Graffiti Explorer`;
 			} catch (err) {
 				this.errorMessage = err;
 				this.title = err.message;

@@ -64,6 +64,7 @@ export default {
 				// Set data
 				this.name = artist.name;
 				this.artworks = artist.artworks;
+				document.title = `${this.name} - York Graffiti Explorer`;
 			} catch (err) {
 				this.errorMessage = err;
 				this.name = err.message;
