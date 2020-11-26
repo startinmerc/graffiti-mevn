@@ -6,7 +6,13 @@
 				class="placeholder"
 				v-for="artist in artists"
 				:key="artist._id"
-				:style="{ backgroundImage: `${getRandomPhoto(artist.artworks)}` }"
+				:style="{
+					backgroundImage: `${
+						artist.artworks.length > 1
+							? getRandomPhoto(artist.artworks)
+							: 'var(--placeholder-gradient)'
+					}`,
+				}"
 			>
 				<router-link
 					:to="{ name: 'ArtistDetail', params: { artistID: artist._id } }"

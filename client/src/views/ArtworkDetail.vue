@@ -11,10 +11,11 @@
 			<h1>{{ title }}</h1>
 			<p>
 				<router-link
-					v-if="artist._id.length > 0"
+					v-if="artist !== null && artist._id"
 					:to="{ name: 'ArtistDetail', params: { artistID: artist._id } }"
 					><b>{{ artist.name }}</b></router-link
 				>
+				<b v-else>{{ artist }}</b>
 			</p>
 			<p v-if="description">{{ description }}</p>
 			<router-link :to="{ name: 'FullMap' }" class="button">
@@ -43,9 +44,9 @@ export default {
 	name: "ArtworkDetail",
 	data: function() {
 		return {
-			title: "",
-			artist: { _id: "", name: "" },
-			description: "",
+			title: null,
+			artist: null,
+			description: null,
 			photos: [],
 			error: false,
 			errorMessage: {},
@@ -62,20 +63,20 @@ export default {
 			this.findArtwork();
 		} else {
 			// Set data to param properties
-			this.title = this.$route.params.title;
-			this.description = this.$route.params.description;
-			this.artist = this.$route.params.artist;
-			this.photos = this.$route.params.photos;
+			this.title = this.$route.params.title || "No Title";
+			this.description = this.$route.params.description || "No description";
+			this.artist = this.$route.params.artist || "No Artist";
+			this.photos = this.$route.params.photos || [];
 		}
 	},
 	methods: {
 		async findArtwork() {
 			try {
 				let artwork = await getArtwork(this.$route.params.artworkID);
-				this.title = artwork.title;
-				this.description = artwork.description;
-				this.artist = artwork.artist;
-				this.photos = artwork.photos;
+				this.title = artwork.title || "No Title";
+				this.description = artwork.description || "No description";
+				this.artist = artwork.artist || "No Artist";
+				this.photos = artwork.photos || [];
 				document.title = `${this.title} - York Graffiti Explorer`;
 			} catch (err) {
 				this.errorMessage = err;

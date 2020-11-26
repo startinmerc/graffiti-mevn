@@ -85,6 +85,10 @@ const routes = [
 			title: "Page Not Found - York Graffiti Explorer",
 		},
 	},
+	{
+		path: "*",
+		component: PageNotFound,
+	}
 ];
 
 const router = new VueRouter({

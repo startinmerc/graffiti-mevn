@@ -21,6 +21,8 @@
 					>
 				</p>
 			</li>
+			<p v-if="artworks.length < 1 && !errorMessage">{{name}} does not have any artworks posted yet.</p>
+			<p v-if="artworks.length < 1 && !errorMessage">Found one? <router-link :to="{name: 'SubmitArtwork'}">Submit it!</router-link></p>
 		</ul>
 		<!-- !-To implement -->
 		<!-- <router-link
@@ -50,7 +52,7 @@ export default {
 			name: "",
 			artworks: [],
 			error: false,
-			errorMessage: {},
+			errorMessage: false,
 		};
 	},
 	mounted: function() {
